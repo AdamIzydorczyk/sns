@@ -1,0 +1,19 @@
+rootProject.name = 'sns'
+
+include 'sns-api'
+include 'sns-security'
+
+include 'sns-common:domain'
+include 'sns-common:infrastructure'
+
+include 'sns-operation:app'
+include 'sns-operation:infrastructure'
+include 'sns-operation:domain'
+
+include 'sns-search:app'
+include 'sns-search:infrastructure'
+include 'sns-search:domain'
+
+
+
+

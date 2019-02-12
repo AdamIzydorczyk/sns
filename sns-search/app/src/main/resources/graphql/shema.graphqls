@@ -1,0 +1,14 @@
+type Post {
+    id: Int!
+    deleted: Boolean!
+    createdBy: String!
+    createdAt: Int!
+    modifiedBy: String
+    modifiedAt: Int
+    content: String
+}
+
+type Query {
+    posts: [Post!]!
+}
+
