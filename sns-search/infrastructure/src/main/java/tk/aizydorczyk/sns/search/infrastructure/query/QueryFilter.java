@@ -1,4 +1,4 @@
-package tk.aizydorczyk.sns.search.domain.post;
+package tk.aizydorczyk.sns.search.infrastructure.query;
 
 public class QueryFilter {
     private String field;
