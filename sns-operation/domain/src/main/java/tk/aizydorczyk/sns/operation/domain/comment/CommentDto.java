@@ -1,6 +1,6 @@
-package tk.aizydorczyk.sns.common.domain.comment;
+package tk.aizydorczyk.sns.operation.domain.comment;
 
-import tk.aizydorczyk.sns.common.infrastructure.rest.BaseDto;
+import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
 
 public class CommentDto extends BaseDto {
 

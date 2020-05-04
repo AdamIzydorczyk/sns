@@ -1,9 +1,9 @@
-package tk.aizydorczyk.sns.common.infrastructure.jpa;
+package tk.aizydorczyk.sns.operation.infrastructure.jpa;
 
 import tk.aizydorczyk.sns.common.infrastructure.mapper.MappedEntity;
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
-import tk.aizydorczyk.sns.common.infrastructure.rest.BaseDto;
 import tk.aizydorczyk.sns.common.infrastructure.utils.ClassUtils;
+import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;

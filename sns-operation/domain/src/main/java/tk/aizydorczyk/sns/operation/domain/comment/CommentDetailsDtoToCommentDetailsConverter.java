@@ -1,8 +1,6 @@
-package tk.aizydorczyk.sns.common.converter;
+package tk.aizydorczyk.sns.operation.domain.comment;
 
 import org.modelmapper.AbstractConverter;
-import tk.aizydorczyk.sns.common.domain.comment.CommentDetails;
-import tk.aizydorczyk.sns.common.domain.comment.CommentsDetailsDto;
 
 import java.util.Optional;
 

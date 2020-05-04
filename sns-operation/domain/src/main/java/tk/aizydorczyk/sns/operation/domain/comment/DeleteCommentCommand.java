@@ -1,6 +1,6 @@
 package tk.aizydorczyk.sns.operation.domain.comment;
 
-import tk.aizydorczyk.sns.common.domain.post.Post;
+import tk.aizydorczyk.sns.operation.domain.post.Post;
 import tk.aizydorczyk.sns.operation.infrastructure.command.BaseDeleteDependentCommand;
 
 import java.util.Optional;

@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import tk.aizydorczyk.sns.common.infrastructure.jpa.BaseDependentEntity;
-import tk.aizydorczyk.sns.common.infrastructure.jpa.BaseEntity;
-import tk.aizydorczyk.sns.common.infrastructure.rest.BaseDto;
 import tk.aizydorczyk.sns.common.infrastructure.utils.TransactionUtils;
 import tk.aizydorczyk.sns.operation.infrastructure.command.BaseCreateDependentCommand;
 import tk.aizydorczyk.sns.operation.infrastructure.command.BaseDeleteDependentCommand;
@@ -21,6 +18,8 @@ import tk.aizydorczyk.sns.operation.infrastructure.command.BaseUpdateDependentCo
 import tk.aizydorczyk.sns.operation.infrastructure.event.CreateDependentCommandEvent;
 import tk.aizydorczyk.sns.operation.infrastructure.event.DeleteDependentCommandEvent;
 import tk.aizydorczyk.sns.operation.infrastructure.event.UpdateDependentCommandEvent;
+import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseDependentEntity;
+import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
 
 import javax.validation.Valid;
 import java.time.Clock;
