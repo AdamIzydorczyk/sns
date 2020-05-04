@@ -34,13 +34,13 @@ public class PostQueryResolver implements GraphQLQueryResolver {
         this.entityManager = entityManager;
     }
 
-    public List<PostDto> posts(QueryFilter[] filters) {
+    public List<PostDto> findPosts(QueryFilter[] filters) {
         final String where = Arrays.stream(filters)
                 .map(QueryFilter::getField)
                 .map(fieldName -> "p." + fieldName + " = :" + fieldName)
                 .collect(Collectors.joining(" and "));
 
-        final TypedQuery<Post> query = entityManager.createQuery("select p from Post p where " + where, Post.class);
+        final TypedQuery<Post> query = entityManager.createQuery("select p from " + postClass.getCanonicalName() + " p where " + where, Post.class);
 
         setParameters(filters, query);
 
