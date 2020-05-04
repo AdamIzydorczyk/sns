@@ -11,14 +11,24 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import tk.aizydorczyk.sns.common.infrastructure.utils.TransactionUtils;
-import tk.aizydorczyk.sns.operation.domain.config.H2JpaConfig;
-import tk.aizydorczyk.sns.operation.infrastructure.mapper.MapperConfiguration;
+import tk.aizydorczyk.sns.common.infrastructure.converter.ConvertersConfiguration;
+import tk.aizydorczyk.sns.common.infrastructure.mapper.MapperConfiguration;
+import tk.aizydorczyk.sns.common.infrastructure.time.TimeConfiguration;
+import tk.aizydorczyk.sns.common.infrastructure.utils.UtilsConfiguration;
+import tk.aizydorczyk.sns.operation.domain.config.H2JpaConfiguation;
+
+import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {H2JpaConfig.class, PostConfiguration.class, MapperConfiguration.class, PostController.class, TransactionUtils.class})
+@SpringBootTest(classes = {H2JpaConfiguation.class,
+        PostConfiguration.class,
+        MapperConfiguration.class,
+        PostController.class,
+        UtilsConfiguration.class,
+        TimeConfiguration.class,
+        ConvertersConfiguration.class})
 @AutoConfigureMockMvc
 public class PostControllerTest {
 
@@ -30,6 +40,7 @@ public class PostControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/posts")
                 .content(asJsonString(new PostDto("TEST")))
+                .header("userUuid", UUID.randomUUID())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())

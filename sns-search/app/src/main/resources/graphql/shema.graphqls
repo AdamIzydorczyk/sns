@@ -15,6 +15,9 @@ type Comment {
     createdAt: String!
     modifiedBy: String
     modifiedAt: String,
+    comment: String!,
+    pluses: Int!
+    minuses: Int!
     post: Post!
 }
 
