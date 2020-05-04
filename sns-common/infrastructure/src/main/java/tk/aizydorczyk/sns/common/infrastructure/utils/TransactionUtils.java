@@ -12,6 +12,11 @@ public class TransactionUtils {
         return supplier.get();
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public <ResultType> ResultType runInReadOnlyTransaction(Supplier<ResultType> supplier) {
+        return supplier.get();
+    }
+
     @Transactional(propagation = Propagation.REQUIRED)
     public void runInTransaction(Runnable runnable) {
         runnable.run();
