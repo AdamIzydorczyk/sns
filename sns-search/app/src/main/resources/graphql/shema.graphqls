@@ -8,7 +8,12 @@ type Post {
     content: String
 }
 
+input QueryFilter{
+    field: String!
+    value: String!
+}
+
 type Query {
-    posts: [Post!]!
+    posts(filters: [QueryFilter!]): [Post!]!
 }
 
