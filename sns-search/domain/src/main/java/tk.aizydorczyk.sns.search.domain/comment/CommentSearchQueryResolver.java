@@ -5,15 +5,19 @@ import tk.aizydorczyk.sns.search.infrastructure.query.QueryFilter;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class CommentSearchQueryResolver implements GraphQLQueryResolver {
     private Function<QueryFilter[], List<CommentSearch>> findComments;
+    private final Function<Supplier<List<CommentSearch>>, List<CommentSearch>> runInTransaction;
 
-    CommentSearchQueryResolver(Function<QueryFilter[], List<CommentSearch>> findComments) {
+    CommentSearchQueryResolver(Function<QueryFilter[], List<CommentSearch>> findComments,
+                               Function<Supplier<List<CommentSearch>>, List<CommentSearch>> runInTransaction) {
+        this.runInTransaction = runInTransaction;
         this.findComments = findComments;
     }
 
     public List<CommentSearch> findComments(QueryFilter[] filters) {
-        return findComments.apply(filters);
+        return runInTransaction.apply(() -> findComments.apply(filters));
     }
 }

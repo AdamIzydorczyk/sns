@@ -6,6 +6,7 @@ type Post {
     modifiedBy: String
     modifiedAt: String
     content: String
+    comments: [Comment]
 }
 
 type Comment {
