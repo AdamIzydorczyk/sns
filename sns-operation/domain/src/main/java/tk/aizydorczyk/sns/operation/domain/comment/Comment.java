@@ -1,10 +1,10 @@
-package tk.aizydorczyk.sns.common.domain.comment;
+package tk.aizydorczyk.sns.operation.domain.comment;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import tk.aizydorczyk.sns.common.domain.post.Post;
-import tk.aizydorczyk.sns.common.infrastructure.jpa.BaseDependentEntity;
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
+import tk.aizydorczyk.sns.operation.domain.post.Post;
+import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseDependentEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;

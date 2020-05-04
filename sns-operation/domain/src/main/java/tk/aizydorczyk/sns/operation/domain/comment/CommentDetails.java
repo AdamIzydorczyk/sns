@@ -1,4 +1,4 @@
-package tk.aizydorczyk.sns.common.domain.comment;
+package tk.aizydorczyk.sns.operation.domain.comment;
 
 import tk.aizydorczyk.sns.common.infrastructure.mapper.MappedEntity;
 

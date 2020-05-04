@@ -1,6 +1,6 @@
 package tk.aizydorczyk.sns.operation.infrastructure.command;
 
-import tk.aizydorczyk.sns.common.infrastructure.jpa.BaseEntity;
+import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;

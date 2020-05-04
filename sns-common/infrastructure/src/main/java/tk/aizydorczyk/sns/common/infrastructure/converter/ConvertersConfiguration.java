@@ -1,15 +1,10 @@
-package tk.aizydorczyk.sns.common.converter;
+package tk.aizydorczyk.sns.common.infrastructure.converter;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class CommonConverterConfiguration {
-
-    @Bean
-    public CommentDetailsDtoToCommentDetailsConverter commentDetailsDtoToCommentDetailsConverter() {
-        return new CommentDetailsDtoToCommentDetailsConverter();
-    }
+public class ConvertersConfiguration {
 
     @Bean
     public LocalDateTimeToLongConverter localDateTimeToLongConverter() {

@@ -2,7 +2,6 @@ package tk.aizydorczyk.sns.operation.domain.comment;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import tk.aizydorczyk.sns.common.domain.comment.CommentDto;
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
 import tk.aizydorczyk.sns.operation.domain.post.PostRepository;
 
@@ -40,4 +39,10 @@ class CommentConfiguration {
         return new DeleteCommentCommand(commentRepository::deleteById,
                 postRepository::findById);
     }
+
+    @Bean
+    public CommentDetailsDtoToCommentDetailsConverter commentDetailsDtoToCommentDetailsConverter() {
+        return new CommentDetailsDtoToCommentDetailsConverter();
+    }
+
 }

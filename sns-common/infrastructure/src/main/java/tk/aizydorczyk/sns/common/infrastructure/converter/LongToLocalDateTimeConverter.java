@@ -1,4 +1,4 @@
-package tk.aizydorczyk.sns.common.converter;
+package tk.aizydorczyk.sns.common.infrastructure.converter;
 
 import org.modelmapper.AbstractConverter;
 

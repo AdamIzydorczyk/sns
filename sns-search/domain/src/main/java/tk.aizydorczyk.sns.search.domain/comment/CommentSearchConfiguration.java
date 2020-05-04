@@ -9,8 +9,8 @@ import javax.persistence.EntityManager;
 @Configuration
 public class CommentSearchConfiguration {
     @Bean
-    public CommentQueryResolver commentQueryResolver(EntityManager entityManager,
-                                                     Mapper mapper) {
-        return new CommentQueryResolver(mapper, entityManager);
+    public CommentSearchQueryResolver commentQueryResolver(EntityManager entityManager,
+                                                           Mapper mapper) {
+        return new CommentSearchQueryResolver(mapper, entityManager);
     }
 }

@@ -1,4 +1,4 @@
-package tk.aizydorczyk.sns.common.infrastructure.jpa;
+package tk.aizydorczyk.sns.operation.infrastructure.jpa;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;

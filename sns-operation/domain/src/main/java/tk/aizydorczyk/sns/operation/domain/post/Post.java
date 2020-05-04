@@ -1,9 +1,9 @@
-package tk.aizydorczyk.sns.common.domain.post;
+package tk.aizydorczyk.sns.operation.domain.post;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import tk.aizydorczyk.sns.common.infrastructure.jpa.BaseEntity;
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
+import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

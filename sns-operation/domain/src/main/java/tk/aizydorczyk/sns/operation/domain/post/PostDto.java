@@ -1,6 +1,6 @@
-package tk.aizydorczyk.sns.common.domain.post;
+package tk.aizydorczyk.sns.operation.domain.post;
 
-import tk.aizydorczyk.sns.common.infrastructure.rest.BaseDto;
+import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
 
 public class PostDto extends BaseDto {
     private String content;

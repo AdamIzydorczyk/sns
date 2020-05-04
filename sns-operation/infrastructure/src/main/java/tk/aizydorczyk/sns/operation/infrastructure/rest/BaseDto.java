@@ -1,4 +1,4 @@
-package tk.aizydorczyk.sns.common.infrastructure.rest;
+package tk.aizydorczyk.sns.operation.infrastructure.rest;
 
 import java.util.UUID;
 

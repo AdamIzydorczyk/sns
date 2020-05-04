@@ -1,10 +1,7 @@
-package tk.aizydorczyk.sns.search.domain.comment;
+package tk.aizydorczyk.sns.search.domain.post;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
-import tk.aizydorczyk.sns.common.domain.comment.Comment;
-import tk.aizydorczyk.sns.common.domain.comment.CommentDto;
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
-import tk.aizydorczyk.sns.search.domain.post.QueryFilter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.MappedSuperclass;
@@ -16,33 +13,30 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
+public class PostSearchQueryResolver implements GraphQLQueryResolver {
 
-public class CommentQueryResolver implements GraphQLQueryResolver {
     private final EntityManager entityManager;
 
-    private final Class<Comment> commentClass = Comment.class;
+    private final Class<PostSearch> postSearchClass = PostSearch.class;
     private final Mapper mapper;
 
-    CommentQueryResolver(Mapper mapper,
-                         EntityManager entityManager) {
+    PostSearchQueryResolver(Mapper mapper,
+                            EntityManager entityManager) {
         this.mapper = mapper;
         this.entityManager = entityManager;
     }
 
-    public List<CommentDto> findComments(QueryFilter[] filters) {
+    public List<PostSearch> findPosts(QueryFilter[] filters) {
         final String where = Arrays.stream(filters)
                 .map(QueryFilter::getField)
-                .map(fieldName -> "e." + fieldName + " = :" + fieldName)
+                .map(fieldName -> "p." + fieldName + " = :" + fieldName)
                 .collect(Collectors.joining(" and "));
 
-        final TypedQuery<Comment> query = entityManager.createQuery("select e from " + commentClass.getCanonicalName() + " e where " + where, Comment.class);
+        final TypedQuery<PostSearch> query = entityManager.createQuery("select p from " + postSearchClass.getCanonicalName() + " p where " + where, PostSearch.class);
 
         setParameters(filters, query);
 
-        return query.getResultList().stream()
-                .map(post -> mapper.map(post, CommentDto.class))
-                .collect(toList());
+        return query.getResultList();
     }
 
     private void setParameters(QueryFilter[] filters, Query query) {
@@ -62,12 +56,12 @@ public class CommentQueryResolver implements GraphQLQueryResolver {
     }
 
     private List<Field> fetchAllFields() {
-        final List<Field> fields = new ArrayList<>(List.of(commentClass.getDeclaredFields()));
-        fetchSuperClassFields(commentClass.getSuperclass(), fields);
+        final List<Field> fields = new ArrayList<>(List.of(postSearchClass.getDeclaredFields()));
+        fetchSuperClassFields(postSearchClass.getSuperclass(), fields);
         return fields;
     }
 
-    private void fetchSuperClassFields(Class<? super Comment> superclass, List<Field> fields) {
+    private void fetchSuperClassFields(Class<? super PostSearch> superclass, List<Field> fields) {
         if (superclass.isAnnotationPresent(MappedSuperclass.class)) {
             final Field[] declaredFields = superclass.getDeclaredFields();
             fields.addAll(List.of(declaredFields));

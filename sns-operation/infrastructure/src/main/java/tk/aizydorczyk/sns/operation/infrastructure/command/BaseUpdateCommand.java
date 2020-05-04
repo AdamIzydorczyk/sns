@@ -1,8 +1,8 @@
 package tk.aizydorczyk.sns.operation.infrastructure.command;
 
-import tk.aizydorczyk.sns.common.infrastructure.jpa.BaseEntity;
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
-import tk.aizydorczyk.sns.common.infrastructure.rest.BaseDto;
+import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
+import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;

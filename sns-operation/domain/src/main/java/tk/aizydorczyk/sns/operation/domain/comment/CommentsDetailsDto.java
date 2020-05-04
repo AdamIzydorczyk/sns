@@ -1,4 +1,4 @@
-package tk.aizydorczyk.sns.common.domain.comment;
+package tk.aizydorczyk.sns.operation.domain.comment;
 
 public class CommentsDetailsDto {
     private String comment;

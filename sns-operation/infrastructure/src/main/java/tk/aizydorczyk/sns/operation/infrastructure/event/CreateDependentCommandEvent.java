@@ -1,7 +1,7 @@
 package tk.aizydorczyk.sns.operation.infrastructure.event;
 
-import tk.aizydorczyk.sns.common.infrastructure.rest.BaseDto;
 import tk.aizydorczyk.sns.operation.infrastructure.command.BaseCreateDependentCommand;
+import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

@@ -2,9 +2,9 @@ type Post {
     id: Int!
     deleted: Boolean!
     createdBy: String!
-    createdAt: Int!
+    createdAt: String!
     modifiedBy: String
-    modifiedAt: Int
+    modifiedAt: String
     content: String
 }
 
@@ -12,9 +12,10 @@ type Comment {
     id: Int!
     deleted: Boolean!
     createdBy: String!
-    createdAt: Int!
+    createdAt: String!
     modifiedBy: String
-    modifiedAt: Int
+    modifiedAt: String,
+    post: Post!
 }
 
 input QueryFilter{

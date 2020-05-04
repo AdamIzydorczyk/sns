@@ -1,7 +1,5 @@
 package tk.aizydorczyk.sns.operation.domain.post;
 
-import tk.aizydorczyk.sns.common.domain.post.Post;
-import tk.aizydorczyk.sns.common.domain.post.PostDto;
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
 import tk.aizydorczyk.sns.operation.infrastructure.command.BaseUpdateCommand;
 

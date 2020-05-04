@@ -2,7 +2,6 @@ package tk.aizydorczyk.sns.operation.domain.post;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import tk.aizydorczyk.sns.common.domain.post.PostDto;
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
 
 @Configuration
