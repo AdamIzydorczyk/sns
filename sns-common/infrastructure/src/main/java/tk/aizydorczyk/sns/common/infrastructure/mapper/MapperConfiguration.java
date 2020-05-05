@@ -23,7 +23,6 @@ public class MapperConfiguration {
         this.converters = converters;
     }
 
-    @Bean
     public ModelMapper modelMapper() {
         final ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
@@ -55,8 +54,8 @@ public class MapperConfiguration {
     }
 
     @Bean
-    public Mapper mapper(ModelMapper modelMapper) {
-        return modelMapper::map;
+    public Mapper mapper() {
+        return modelMapper()::map;
     }
 
 }

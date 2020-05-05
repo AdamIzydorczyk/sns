@@ -3,12 +3,12 @@ package tk.aizydorczyk.sns.operation.infrastructure.command;
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseDependentEntity;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
+import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
 
-import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 
 public abstract class BaseCreateDependentCommand<DtoType extends BaseDto,
@@ -24,19 +24,20 @@ public abstract class BaseCreateDependentCommand<DtoType extends BaseDto,
                                          Function<DependentEntityType, DependentEntityType> save,
                                          Function<DependentEntityType, DtoType> mapToDto,
                                          Mapper mapper) {
-        this.mapToDto = mapToDto;
-        this.save = save;
-        this.findParentEntityById = findParentEntityById;
-        this.mapper = mapper;
+        this.mapToDto = Objects.requireNonNull(mapToDto);
+        this.save = Objects.requireNonNull(save);
+        this.findParentEntityById = Objects.requireNonNull(findParentEntityById);
+        this.mapper = Objects.requireNonNull(mapper);
     }
 
-    public final DtoType execute(Long postId, DtoType commentDto, LocalDateTime executionTime, UUID userUuid) {
+    public final DtoType execute(Long postId, DtoType commentDto,
+                                 AuditingInformation auditingInformation) {
         final ParentEntityType parent = findParentEntityById.apply(postId)
                 .orElseThrow(() -> new NoSuchElementException("Parent not found"));
 
         final DependentEntityType dependentEntity = createDependentEntity(commentDto, mapper);
         dependentEntity.applyParent(parent);
-        dependentEntity.applyTimeAndUser(executionTime, userUuid);
+        dependentEntity.applyAuditingInformation(auditingInformation);
         save.apply(dependentEntity);
         return mapToDto.apply(dependentEntity);
     }

@@ -21,9 +21,6 @@ import tk.aizydorczyk.sns.operation.infrastructure.event.UpdateCommandEvent;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
 
 import javax.validation.Valid;
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 public abstract class BaseController<DtoType extends BaseDto,
         EntityType extends BaseEntity<DtoType>,
@@ -39,58 +36,50 @@ public abstract class BaseController<DtoType extends BaseDto,
 
     private final TransactionUtils transactionUtils;
     private final ApplicationEventPublisher eventPublisher;
-    private final Clock clock;
 
     protected BaseController(CreateCommand createCommand,
                              UpdateCommand updateCommand,
                              DeleteCommand deleteCommand,
                              TransactionUtils transactionUtils,
-                             ApplicationEventPublisher eventPublisher,
-                             Clock clock) {
+                             ApplicationEventPublisher eventPublisher) {
         this.createCommand = createCommand;
         this.updateCommand = updateCommand;
         this.deleteCommand = deleteCommand;
         this.transactionUtils = transactionUtils;
         this.eventPublisher = eventPublisher;
-        this.clock = clock;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public DtoType create(@RequestBody @Valid DtoType dto,
-                          @RequestHeader(value = "userUuid") UUID userUuid) {
-        LOGGER.info("Create in: " + getClass().getSimpleName() + " body: " + dto);
+                          @RequestHeader(value = "userUuid") AuditingInformation auditingInformation) {
+        LOGGER.info("Create in: {} body: {}", getClass().getSimpleName(), dto);
         return transactionUtils.runInTransaction(() -> {
-            final LocalDateTime executionTime = LocalDateTime.now(clock);
             eventPublisher.publishEvent(new CreateCommandEvent<>(createCommand.getClass(),
                     dto.getClass(),
                     dto,
-                    executionTime,
-                    userUuid));
-            return createCommand.execute(dto, executionTime, userUuid);
+                    auditingInformation));
+            return createCommand.execute(dto, auditingInformation);
         });
     }
 
     @PutMapping("/{id}")
     public DtoType update(@PathVariable("id") Long id,
                           @RequestBody @Valid DtoType dto,
-                          @RequestHeader(value = "userUuid") UUID userUuid) {
-        LOGGER.info("Update in: " + getClass().getSimpleName() + "id: " + id + " body: " + dto);
-
+                          @RequestHeader(value = "userUuid") AuditingInformation auditingInformation) {
+        LOGGER.info("Update in: {} id: {} body: {}", getClass().getSimpleName(), id, dto);
         return transactionUtils.runInTransaction(() -> {
-            final LocalDateTime executionTime = LocalDateTime.now(clock);
-            eventPublisher.publishEvent(new UpdateCommandEvent<>(updateCommand.getClass(), dto.getClass(), dto, id, executionTime, userUuid));
-            return updateCommand.execute(id, dto, executionTime, userUuid);
+            eventPublisher.publishEvent(new UpdateCommandEvent<>(updateCommand.getClass(), dto.getClass(), dto, id, auditingInformation));
+            return updateCommand.execute(id, dto, auditingInformation);
         });
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id,
-                       @RequestHeader(value = "userUuid") UUID userUuid) {
-        LOGGER.info("Delete in: " + getClass().getSimpleName() + " id: " + id);
+                       @RequestHeader(value = "userUuid") AuditingInformation auditingInformation) {
+        LOGGER.info("Delete in: {} id: {}", getClass().getSimpleName(), id);
         transactionUtils.runInTransaction(() -> {
-            final LocalDateTime executionTime = LocalDateTime.now(clock);
-            eventPublisher.publishEvent(new DeleteCommandEvent(deleteCommand.getClass(), id, executionTime, userUuid));
+            eventPublisher.publishEvent(new DeleteCommandEvent(deleteCommand.getClass(), id, auditingInformation));
             deleteCommand.execute(id);
         });
     }

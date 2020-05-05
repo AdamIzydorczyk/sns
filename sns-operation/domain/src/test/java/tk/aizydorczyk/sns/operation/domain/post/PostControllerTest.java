@@ -16,6 +16,7 @@ import tk.aizydorczyk.sns.common.infrastructure.mapper.MapperConfiguration;
 import tk.aizydorczyk.sns.common.infrastructure.time.TimeConfiguration;
 import tk.aizydorczyk.sns.common.infrastructure.utils.UtilsConfiguration;
 import tk.aizydorczyk.sns.operation.domain.config.H2JpaConfiguation;
+import tk.aizydorczyk.sns.operation.infrastructure.rest.RestConfiguration;
 
 import java.util.UUID;
 
@@ -28,7 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         PostController.class,
         UtilsConfiguration.class,
         TimeConfiguration.class,
-        ConvertersConfiguration.class})
+        ConvertersConfiguration.class,
+        RestConfiguration.class})
 @AutoConfigureMockMvc
 public class PostControllerTest {
 
@@ -47,7 +49,7 @@ public class PostControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content").value("TEST"));
     }
 
-    public static String asJsonString(final Object obj) {
+    public static String asJsonString(Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
         } catch (Exception e) {

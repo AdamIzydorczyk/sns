@@ -77,10 +77,18 @@ public final class ClassUtils {
     public static <TargetType> TargetType newInstance(String className,
                                                       Class<TargetType> targetType) {
         try {
-            Class<?> clazz = ClassUtils.class.getClassLoader().loadClass(className);
+            Class<?> clazz = loadClass(className);
             return targetType.cast(newInstance(clazz));
-        } catch (ClassNotFoundException | ClassCastException e) {
+        } catch (ClassCastException e) {
             throw new IllegalStateException("Failed to create a new instance of the provided class", e);
+        }
+    }
+
+    public static Class<?> loadClass(String className) {
+        try {
+            return ClassUtils.class.getClassLoader().loadClass(className);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 

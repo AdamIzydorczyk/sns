@@ -7,9 +7,9 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class DeleteCommentCommand extends BaseDeleteDependentCommand<Post> {
+class DeleteCommentCommand extends BaseDeleteDependentCommand<Post> {
 
-    public DeleteCommentCommand(Consumer<Long> deleteById,
+    DeleteCommentCommand(Consumer<Long> deleteById,
                                 Function<Long, Optional<Post>> findPostById) {
         super(deleteById, findPostById);
     }

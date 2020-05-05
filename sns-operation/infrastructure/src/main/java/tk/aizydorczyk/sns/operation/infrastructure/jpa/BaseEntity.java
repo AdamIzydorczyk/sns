@@ -3,6 +3,7 @@ package tk.aizydorczyk.sns.operation.infrastructure.jpa;
 import tk.aizydorczyk.sns.common.infrastructure.mapper.MappedEntity;
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
 import tk.aizydorczyk.sns.common.infrastructure.utils.ClassUtils;
+import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
 
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 import static java.util.Objects.isNull;
@@ -31,6 +33,7 @@ public abstract class BaseEntity<TargetDtoType extends BaseDto> implements Mappe
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCE_GENERATOR)
     private Long id;
 
+    @NotNull
     @Column(nullable = false)
     private boolean deleted = false;
 
@@ -57,8 +60,9 @@ public abstract class BaseEntity<TargetDtoType extends BaseDto> implements Mappe
     protected BaseEntity() {
     }
 
-    protected BaseEntity(TargetDtoType dto, Mapper mapper) {
-        applyDto(dto, mapper);
+    protected BaseEntity(TargetDtoType dto,
+                         Mapper mapper) {
+        applyDto(Objects.requireNonNull(dto), Objects.requireNonNull(mapper));
     }
 
     @Override
@@ -93,10 +97,9 @@ public abstract class BaseEntity<TargetDtoType extends BaseDto> implements Mappe
         }
     }
 
-    public void applyTimeAndUser(LocalDateTime time,
-                                 UUID userUuid) {
-        this.time = time;
-        this.userUuid = userUuid;
+    public void applyAuditingInformation(AuditingInformation auditingInformation) {
+        this.time = auditingInformation.getExecutionTime();
+        this.userUuid = auditingInformation.getUserUuid();
     }
 
     public Long getId() {

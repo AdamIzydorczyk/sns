@@ -1,5 +1,7 @@
 package tk.aizydorczyk.sns.operation.domain.comment;
 
+import java.util.Objects;
+
 public class CommentsDetailsDto {
     private String comment;
     private int pluses;
@@ -9,7 +11,7 @@ public class CommentsDetailsDto {
     }
 
     public CommentsDetailsDto(String comment, int pluses, int minuses) {
-        this.comment = comment;
+        this.comment = Objects.requireNonNull(comment);
         this.pluses = pluses;
         this.minuses = minuses;
     }
@@ -18,20 +20,20 @@ public class CommentsDetailsDto {
         return comment;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
     public int getPluses() {
         return pluses;
     }
 
-    public void setPluses(int pluses) {
-        this.pluses = pluses;
-    }
-
     public int getMinuses() {
         return minuses;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void setPluses(int pluses) {
+        this.pluses = pluses;
     }
 
     public void setMinuses(int minuses) {

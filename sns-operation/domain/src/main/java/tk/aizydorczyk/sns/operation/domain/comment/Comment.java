@@ -9,6 +9,7 @@ import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseDependentEntity;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "comment")
@@ -19,8 +20,10 @@ import javax.persistence.Table;
 @Where(clause = "deleted = false")
 public class Comment extends BaseDependentEntity<CommentDto, Post> {
 
+    @NotNull
     private CommentDetails details;
 
+    @NotNull
     @ManyToOne
     private Post post;
 

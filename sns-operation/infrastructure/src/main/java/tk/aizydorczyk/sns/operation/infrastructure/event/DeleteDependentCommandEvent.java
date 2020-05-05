@@ -1,28 +1,25 @@
 package tk.aizydorczyk.sns.operation.infrastructure.event;
 
 import tk.aizydorczyk.sns.operation.infrastructure.command.BaseDeleteDependentCommand;
+import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.UUID;
+import java.util.Objects;
 
 public class DeleteDependentCommandEvent implements SystemEvent {
+
     private final Class<? extends BaseDeleteDependentCommand> deleteDependentCommandClass;
     private final Long parentId;
     private final Long dependentId;
-    private final long executionTime;
-    private final UUID userUuid;
+    private final AuditingInformation auditingInformation;
 
     public DeleteDependentCommandEvent(Class<? extends BaseDeleteDependentCommand> deleteDependentCommandClass,
                                        Long parentId,
                                        Long dependentId,
-                                       LocalDateTime executionTime,
-                                       UUID userUuid) {
-        this.deleteDependentCommandClass = deleteDependentCommandClass;
-        this.parentId = parentId;
-        this.dependentId = dependentId;
-        this.executionTime = executionTime.toEpochSecond(ZoneOffset.UTC);
-        this.userUuid = userUuid;
+                                       AuditingInformation auditingInformation) {
+        this.deleteDependentCommandClass = Objects.requireNonNull(deleteDependentCommandClass);
+        this.parentId = Objects.requireNonNull(parentId);
+        this.dependentId = Objects.requireNonNull(dependentId);
+        this.auditingInformation = Objects.requireNonNull(auditingInformation);
     }
 
     public Class<? extends BaseDeleteDependentCommand> getDeleteDependentCommandClass() {
@@ -37,11 +34,7 @@ public class DeleteDependentCommandEvent implements SystemEvent {
         return dependentId;
     }
 
-    public long getExecutionTime() {
-        return executionTime;
-    }
-
-    public UUID getUserUuid() {
-        return userUuid;
+    public AuditingInformation getAuditingInformation() {
+        return auditingInformation;
     }
 }

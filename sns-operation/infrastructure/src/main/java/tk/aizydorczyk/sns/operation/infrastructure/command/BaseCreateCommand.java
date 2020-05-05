@@ -2,10 +2,10 @@ package tk.aizydorczyk.sns.operation.infrastructure.command;
 
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
+import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.Objects;
 import java.util.function.Function;
 
 public abstract class BaseCreateCommand<DtoType extends BaseDto,
@@ -18,14 +18,15 @@ public abstract class BaseCreateCommand<DtoType extends BaseDto,
     protected BaseCreateCommand(Function<EntityType, EntityType> save,
                                 Function<EntityType, DtoType> mapToDto,
                                 Mapper mapper) {
-        this.mapToDto = mapToDto;
-        this.save = save;
-        this.mapper = mapper;
+        this.mapToDto = Objects.requireNonNull(mapToDto);
+        this.save = Objects.requireNonNull(save);
+        this.mapper = Objects.requireNonNull(mapper);
     }
 
-    public final DtoType execute(DtoType postDto, LocalDateTime executionTime, UUID userUuid) {
+    public final DtoType execute(DtoType postDto,
+                                 AuditingInformation auditingInformation) {
         final EntityType entity = createEntity(postDto, mapper);
-        entity.applyTimeAndUser(executionTime, userUuid);
+        entity.applyAuditingInformation(auditingInformation);
         save.apply(entity);
         return mapToDto.apply(entity);
     }
