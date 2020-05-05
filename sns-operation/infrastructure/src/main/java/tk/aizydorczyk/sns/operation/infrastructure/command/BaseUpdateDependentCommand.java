@@ -3,12 +3,12 @@ package tk.aizydorczyk.sns.operation.infrastructure.command;
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseDependentEntity;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
+import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
 
-import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 
 public abstract class BaseUpdateDependentCommand<DtoType extends BaseDto,
@@ -23,13 +23,16 @@ public abstract class BaseUpdateDependentCommand<DtoType extends BaseDto,
     protected BaseUpdateDependentCommand(Function<Long, Optional<DependentEntityType>> findDependentEntityById,
                                          Function<Long, Optional<ParentEntity>> findParentById,
                                          Function<DependentEntityType, DtoType> mapToDto, Mapper mapper) {
-        this.findDependentEntityById = findDependentEntityById;
-        this.findParentById = findParentById;
-        this.mapToDto = mapToDto;
-        this.mapper = mapper;
+        this.findDependentEntityById = Objects.requireNonNull(findDependentEntityById);
+        this.findParentById = Objects.requireNonNull(findParentById);
+        this.mapToDto = Objects.requireNonNull(mapToDto);
+        this.mapper = Objects.requireNonNull(mapper);
     }
 
-    public final DtoType execute(Long postId, Long commentId, DtoType dto, LocalDateTime executionTime, UUID userUuid) {
+    public final DtoType execute(Long postId,
+                                 Long commentId,
+                                 DtoType dto,
+                                 AuditingInformation auditingInformation) {
         findParentById.apply(postId)
                 .orElseThrow(() -> new NoSuchElementException("Parent not found"));
 
@@ -37,7 +40,7 @@ public abstract class BaseUpdateDependentCommand<DtoType extends BaseDto,
                 .orElseThrow(() -> new NoSuchElementException("Dependent entity not found"));
 
         dependentEntity.applyDto(dto, mapper);
-        dependentEntity.applyTimeAndUser(executionTime, userUuid);
+        dependentEntity.applyAuditingInformation(auditingInformation);
         return mapToDto.apply(dependentEntity);
     }
 }

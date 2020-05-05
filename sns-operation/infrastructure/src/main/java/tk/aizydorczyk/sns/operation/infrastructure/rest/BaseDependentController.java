@@ -22,9 +22,6 @@ import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseDependentEntity;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
 
 import javax.validation.Valid;
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 public abstract class BaseDependentController<DtoType extends BaseDto,
         DependentEntityType extends BaseDependentEntity<DtoType, ParentEntityType>,
@@ -41,37 +38,32 @@ public abstract class BaseDependentController<DtoType extends BaseDto,
 
     private final TransactionUtils transactionUtils;
     private final ApplicationEventPublisher eventPublisher;
-    private final Clock clock;
 
     protected BaseDependentController(CreateDependentEntityCommandType createDependentCommand,
                                       UpdateDependentEntityCommandType updateDependentCommand,
                                       DeleteDependentEntityCommandType deleteDependentCommand,
                                       TransactionUtils transactionUtils,
-                                      ApplicationEventPublisher eventPublisher,
-                                      Clock clock) {
+                                      ApplicationEventPublisher eventPublisher) {
         this.createDependentCommand = createDependentCommand;
         this.updateDependentCommand = updateDependentCommand;
         this.deleteDependentCommand = deleteDependentCommand;
         this.transactionUtils = transactionUtils;
         this.eventPublisher = eventPublisher;
-        this.clock = clock;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public DtoType create(@PathVariable("parentId") Long parentId,
                           @RequestBody @Valid DtoType dto,
-                          @RequestHeader(value = "userUuid") UUID userUuid) {
+                          @RequestHeader(value = "userUuid") AuditingInformation auditingInformation) {
         LOGGER.info("Create in: {} parentId: {} body: {}", getClass().getSimpleName(), parentId, dto);
         return transactionUtils.runInTransaction(() -> {
-            final LocalDateTime executionTime = LocalDateTime.now(clock);
             eventPublisher.publishEvent(new CreateDependentCommandEvent<>(createDependentCommand.getClass(),
                     dto.getClass(),
                     dto,
                     parentId,
-                    executionTime,
-                    userUuid));
-            return createDependentCommand.execute(parentId, dto, executionTime, userUuid);
+                    auditingInformation));
+            return createDependentCommand.execute(parentId, dto, auditingInformation);
         });
     }
 
@@ -79,33 +71,29 @@ public abstract class BaseDependentController<DtoType extends BaseDto,
     public DtoType update(@PathVariable("parentId") Long parentId,
                           @PathVariable("dependentId") Long dependentId,
                           @RequestBody @Valid DtoType dto,
-                          @RequestHeader(value = "userUuid") UUID userUuid) {
+                          @RequestHeader(value = "userUuid") AuditingInformation auditingInformation) {
         LOGGER.info("Update in: {} parentId: {} dependentId: {} body: {}", getClass().getSimpleName(), parentId, dependentId, dto);
         return transactionUtils.runInTransaction(() -> {
-            final LocalDateTime executionTime = LocalDateTime.now(clock);
             eventPublisher.publishEvent(new UpdateDependentCommandEvent<>(updateDependentCommand.getClass(),
                     dto.getClass(),
                     dto,
                     parentId,
                     dependentId,
-                    executionTime,
-                    userUuid));
-            return updateDependentCommand.execute(parentId, dependentId, dto, executionTime, userUuid);
+                    auditingInformation));
+            return updateDependentCommand.execute(parentId, dependentId, dto, auditingInformation);
         });
     }
 
     @DeleteMapping("/{dependentId}")
     public void delete(@PathVariable("parentId") Long parentId,
                        @PathVariable("dependentId") Long dependentId,
-                       @RequestHeader(value = "userUuid") UUID userUuid) {
+                       @RequestHeader(value = "userUuid") AuditingInformation auditingInformation) {
         LOGGER.info("Delete in: {} parentId: {} dependentId: {}", getClass().getSimpleName(), parentId, dependentId);
         transactionUtils.runInTransaction(() -> {
-            final LocalDateTime executionTime = LocalDateTime.now(clock);
             eventPublisher.publishEvent(new DeleteDependentCommandEvent(deleteDependentCommand.getClass(),
                     parentId,
                     dependentId,
-                    executionTime,
-                    userUuid));
+                    auditingInformation));
             deleteDependentCommand.execute(parentId, dependentId);
         });
     }

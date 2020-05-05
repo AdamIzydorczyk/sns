@@ -6,13 +6,13 @@ import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
 import tk.aizydorczyk.sns.operation.domain.post.PostRepository;
 
 @Configuration
-class CommentConfiguration {
+class CommentCommandsConfiguration {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final Mapper mapper;
 
-    public CommentConfiguration(CommentRepository commentRepository,
-                                PostRepository postRepository, Mapper mapper) {
+    public CommentCommandsConfiguration(CommentRepository commentRepository,
+                                        PostRepository postRepository, Mapper mapper) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
         this.mapper = mapper;
@@ -39,10 +39,4 @@ class CommentConfiguration {
         return new DeleteCommentCommand(commentRepository::deleteById,
                 postRepository::findById);
     }
-
-    @Bean
-    public CommentDetailsDtoToCommentDetailsConverter commentDetailsDtoToCommentDetailsConverter() {
-        return new CommentDetailsDtoToCommentDetailsConverter();
-    }
-
 }

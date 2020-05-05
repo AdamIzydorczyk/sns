@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@EnableJpaRepositories("tk.aizydorczyk.sns.common.domain, tk.aizydorczyk.sns.operation.domain")
+@EnableJpaRepositories({"tk.aizydorczyk.sns.common.domain", "tk.aizydorczyk.sns.operation.domain"})
 @EntityScan({"tk.aizydorczyk.sns.common.domain", "tk.aizydorczyk.sns.operation.domain"})
 class JpaConfiguration {
 

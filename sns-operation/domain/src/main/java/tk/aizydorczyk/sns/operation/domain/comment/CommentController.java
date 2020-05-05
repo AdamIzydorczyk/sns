@@ -7,8 +7,6 @@ import tk.aizydorczyk.sns.common.infrastructure.utils.TransactionUtils;
 import tk.aizydorczyk.sns.operation.domain.post.Post;
 import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDependentController;
 
-import java.time.Clock;
-
 @RestController
 @RequestMapping(value = "posts/{parentId}/comments")
 class CommentController extends BaseDependentController<CommentDto, Comment, Post, CreateCommentCommand, UpdateCommentCommand, DeleteCommentCommand> {
@@ -16,13 +14,11 @@ class CommentController extends BaseDependentController<CommentDto, Comment, Pos
                              UpdateCommentCommand updateCommentCommand,
                              DeleteCommentCommand deletePostCommand,
                              TransactionUtils transactionUtils,
-                             ApplicationEventPublisher eventPublisher,
-                             Clock clock) {
+                             ApplicationEventPublisher eventPublisher) {
         super(createCommentCommand,
                 updateCommentCommand,
                 deletePostCommand,
                 transactionUtils,
-                eventPublisher,
-                clock);
+                eventPublisher);
     }
 }
