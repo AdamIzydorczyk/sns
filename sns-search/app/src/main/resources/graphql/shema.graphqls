@@ -27,8 +27,13 @@ input QueryFilter{
     value: String
 }
 
+input Page{
+    pageNumber: Int!
+    size: Int!
+}
+
 type Query {
-    findPosts(filters: [QueryFilter!]!): [Post!]!
-    findComments(filters: [QueryFilter!]!): [Comment!]!
+    findPosts(filters: [QueryFilter!]!, page: Page!): [Post!]!
+    findComments(filters: [QueryFilter!]!, page: Page!): [Comment!]!
 }
 
