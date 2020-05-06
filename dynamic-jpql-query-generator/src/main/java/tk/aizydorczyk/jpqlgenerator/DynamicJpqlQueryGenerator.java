@@ -43,7 +43,7 @@ public class DynamicJpqlQueryGenerator<SearchEntityType> {
                                 .collect(Collectors.toMap(Field::getName, field -> field))));
     }
 
-    public List<SearchEntityType> findEntities(QueryFilter[] filters) {
+    public List<SearchEntityType> findEntities(QueryFilter[] filters, Page page) {
         final List<QueryFilter> queryFilters = new LinkedList<>(Arrays.asList(filters));
         int joinIndex = 0;
         final List<String> joins = new ArrayList<>();
@@ -91,6 +91,8 @@ public class DynamicJpqlQueryGenerator<SearchEntityType> {
                 String.format("select distinct e from %s e %s %s", searchEntityTypeClass.getCanonicalName(), join, whereClause),
                 searchEntityTypeClass);
         setParametersToQuery(queryFilters, query);
+        query.setMaxResults(page.getSize());
+        query.setFirstResult(page.getPageNumber() * page.getSize());
         return query.getResultList();
     }
 
