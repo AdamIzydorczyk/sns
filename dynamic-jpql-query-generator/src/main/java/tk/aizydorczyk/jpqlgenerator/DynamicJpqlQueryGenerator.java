@@ -1,12 +1,6 @@
-package tk.aizydorczyk.sns.search.infrastructure.query;
-
-import org.apache.commons.lang3.tuple.Pair;
-import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
-import tk.aizydorczyk.sns.common.infrastructure.utils.ClassUtils;
-import tk.aizydorczyk.sns.search.infrastructure.jpa.BaseSearchEntity;
+package tk.aizydorczyk.jpqlgenerator;
 
 import javax.persistence.EntityManager;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.lang.reflect.Field;
@@ -14,51 +8,52 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class DynamicJpqlQueryGenerator<SearchEntityType> {
+import static java.util.Objects.nonNull;
 
+public class DynamicJpqlQueryGenerator<SearchEntityType> {
     private final Class<SearchEntityType> searchEntityTypeClass;
     private final EntityManager entityManager;
-    private final Mapper mapper;
+    private final BiFunction<Object, Class<?>, Object> mapper;
     private final Map<? extends Class<?>, Map<String, Field>> entitiesFields;
 
     public DynamicJpqlQueryGenerator(EntityManager entityManager,
                                      Class<SearchEntityType> searchEntityTypeClass,
-                                     Mapper mapper) {
+                                     BiFunction<Object, Class<?>, Object> mapper,
+                                     Supplier<? extends Collection<? extends Class<?>>> entityTypesProvider) {
         this.searchEntityTypeClass = searchEntityTypeClass;
-        this.entitiesFields = fetchAllFields(searchEntityTypeClass);
+        this.entitiesFields = fetchAllFields(entityTypesProvider);
         this.entityManager = entityManager;
         this.mapper = mapper;
     }
 
-    private Map<? extends Class<?>, Map<String, Field>> fetchAllFields(Class<SearchEntityType> searchEntityTypeClass) {
-        return ClassUtils.findAssignableTypes("tk.aizydorczyk.sns.search", BaseSearchEntity.class).stream()
-                .map(ClassUtils::loadClass)
-                .map(entityClass -> {
-                    final List<Field> fields = new ArrayList<>(List.of(entityClass.getDeclaredFields()));
-                    fetchSuperClassFields(entityClass.getSuperclass(), fields);
-                    return Pair.of(entityClass, fields);
-                }).collect(Collectors.toMap(Pair::getLeft, classListPair -> classListPair.getRight().stream()
-                        .collect(Collectors.toMap(Field::getName, field -> field))));
-    }
-
-    private void fetchSuperClassFields(Class<?> superclass, List<Field> fields) {
-        if (superclass.isAnnotationPresent(MappedSuperclass.class)) {
-            final Field[] declaredFields = superclass.getDeclaredFields();
-            fields.addAll(List.of(declaredFields));
-            fetchSuperClassFields(superclass.getSuperclass(), fields);
-        }
+    private Map<? extends Class<?>, Map<String, Field>> fetchAllFields(Supplier<? extends Collection<? extends Class<?>>> entityTypesProvider) {
+        return entityTypesProvider.get().stream()
+                .map(EntityClassAndListOfFieldsPair::new)
+                .collect(Collectors.toMap(
+                        EntityClassAndListOfFieldsPair::getEntityClass,
+                        classListPair -> classListPair.getFields().stream()
+                                .collect(Collectors.toMap(Field::getName, field -> field))));
     }
 
     public List<SearchEntityType> findEntities(QueryFilter[] filters) {
+        final List<QueryFilter> queryFilters = new LinkedList<>(Arrays.asList(filters));
         int joinIndex = 0;
         final List<String> joins = new ArrayList<>();
         final List<String> ands = new ArrayList<>();
-        for (QueryFilter queryFilter : filters) {
+
+        final Iterator<QueryFilter> queryFilterIterator = queryFilters.iterator();
+
+        while (queryFilterIterator.hasNext()) {
+            final QueryFilter queryFilter = queryFilterIterator.next();
+
             final String field = queryFilter.getField();
             final String[] splittedField = field.split("_");
 
@@ -72,29 +67,44 @@ public class DynamicJpqlQueryGenerator<SearchEntityType> {
             }
 
             if (splittedField.length == 1) {
-                ands.add("e." + queryFilter.getField() + " = :" + queryFilter.getField());
+                if (nonNull(queryFilter.getValue())) {
+                    ands.add("e." + queryFilter.getField() + " = :" + queryFilter.getField());
+                } else {
+                    queryFilterIterator.remove();
+                    ands.add("e." + queryFilter.getField() + " is null");
+                }
             } else {
                 final String lastSubField = splittedField[splittedField.length - 1];
-                ands.add("j" + joinIndex + "." + lastSubField + " = :" + queryFilter.getField());
+                if (nonNull(queryFilter.getValue())) {
+                    ands.add("j" + joinIndex + "." + lastSubField + " = :" + queryFilter.getField());
+                } else {
+                    queryFilterIterator.remove();
+                    ands.add("j" + joinIndex + "." + lastSubField + " is null");
+                }
             }
         }
 
+        final String whereClause = prepareWhereClause(ands);
+
+        final String join = String.join(" ", joins);
+        final TypedQuery<SearchEntityType> query = entityManager.createQuery(
+                String.format("select distinct e from %s e %s %s", searchEntityTypeClass.getCanonicalName(), join, whereClause),
+                searchEntityTypeClass);
+        setParametersToQuery(queryFilters, query);
+        return query.getResultList();
+    }
+
+    private String prepareWhereClause(List<String> ands) {
         String whereClause;
         if (ands.size() > 0) {
             whereClause = "where " + String.join(" and ", ands);
         } else {
             whereClause = "";
         }
-
-        final String join = String.join(" ", joins);
-        final TypedQuery<SearchEntityType> query = entityManager.createQuery(
-                String.format("select distinct e from %s e %s %s", searchEntityTypeClass.getCanonicalName(), join, whereClause),
-                searchEntityTypeClass);
-        setParameters(filters, query);
-        return query.getResultList();
+        return whereClause;
     }
 
-    private void setParameters(QueryFilter[] filters, Query query) {
+    private void setParametersToQuery(List<QueryFilter> filters, Query query) {
         for (QueryFilter filter : filters) {
             try {
                 final String[] splitFields = filter.getField().split("_");
@@ -105,7 +115,7 @@ public class DynamicJpqlQueryGenerator<SearchEntityType> {
                     final Field field = entitiesFields.get(entityFieldType).get(fieldName);
                     if (fieldNamesQueue.isEmpty()) {
                         final Field declaredField = entitiesFields.get(entityFieldType).get(fieldName);
-                        query.setParameter(filter.getField(), mapper.map(filter.getValue(), declaredField.getType()));
+                        query.setParameter(filter.getField(), mapper.apply(filter.getValue(), declaredField.getType()));
                         break;
                     }
                     entityFieldType = getFieldType(field);
@@ -128,8 +138,9 @@ public class DynamicJpqlQueryGenerator<SearchEntityType> {
         return Collection.class.isAssignableFrom(clazz);
     }
 
-    public Class<?> getCollectionGenericType(Field field) {
+    private Class<?> getCollectionGenericType(Field field) {
         final ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
         return (Class<?>) parameterizedType.getActualTypeArguments()[0];
     }
+
 }

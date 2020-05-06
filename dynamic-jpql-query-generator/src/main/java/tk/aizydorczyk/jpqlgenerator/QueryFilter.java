@@ -1,4 +1,6 @@
-package tk.aizydorczyk.sns.search.infrastructure.query;
+package tk.aizydorczyk.jpqlgenerator;
+
+import static java.util.Objects.isNull;
 
 public class QueryFilter {
     private String field;
@@ -7,20 +9,20 @@ public class QueryFilter {
     public QueryFilter() {
     }
 
-    public QueryFilter(String field, String value) {
-        this.field = field;
-        this.value = value;
-    }
+    String getField() {
+        if (isNull(field)) {
+            return null;
+        } else {
+            return field.replace('.', '_');
+        }
 
-    public String getField() {
-        return field;
     }
 
     public void setField(String field) {
         this.field = field;
     }
 
-    public String getValue() {
+    String getValue() {
         return value;
     }
 

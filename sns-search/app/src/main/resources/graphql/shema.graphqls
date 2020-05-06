@@ -24,7 +24,7 @@ type Comment {
 
 input QueryFilter{
     field: String!
-    value: String!
+    value: String
 }
 
 type Query {
