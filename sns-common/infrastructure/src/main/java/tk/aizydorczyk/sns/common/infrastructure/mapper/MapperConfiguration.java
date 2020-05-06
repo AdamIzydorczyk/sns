@@ -23,7 +23,12 @@ public class MapperConfiguration {
         this.converters = converters;
     }
 
-    public ModelMapper modelMapper() {
+    @Bean
+    public Mapper mapper() {
+        return modelMapper()::map;
+    }
+
+    private ModelMapper modelMapper() {
         final ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
                 .setSkipNullEnabled(true)
@@ -42,20 +47,15 @@ public class MapperConfiguration {
         return modelMapper;
     }
 
-    private void registerConverters(ModelMapper modelMapper) {
-        for (Converter converter : converters) {
-            registerConverter(modelMapper, converter);
-        }
-    }
-
     private void registerConverter(ModelMapper modelMapper, Converter converter) {
         modelMapper.addConverter(converter);
         LOGGER.info("Registered converter: '{}'", converter.getClass().getName());
     }
 
-    @Bean
-    public Mapper mapper() {
-        return modelMapper()::map;
+    private void registerConverters(ModelMapper modelMapper) {
+        for (Converter converter : converters) {
+            registerConverter(modelMapper, converter);
+        }
     }
 
 }

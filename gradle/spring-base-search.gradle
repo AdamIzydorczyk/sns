@@ -3,4 +3,5 @@ apply from: "$rootProject.projectDir/gradle/spring-base.gradle"
 dependencies {
     implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:6.0.1'
     runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:6.0.1'
+    compile project(":dynamic-jpql-query-generator")
 }

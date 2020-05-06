@@ -1,7 +1,7 @@
 package tk.aizydorczyk.sns.search.domain.comment;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
-import tk.aizydorczyk.sns.search.infrastructure.query.QueryFilter;
+import tk.aizydorczyk.jpqlgenerator.QueryFilter;
 
 import java.util.List;
 import java.util.function.Function;
