@@ -27,6 +27,14 @@ public class Post extends BaseEntity<PostDto> {
         super(postDto, mapper);
     }
 
+    private Post(Builder builder) {
+        this.content = builder.content;
+    }
+
+    public static Builder newPost() {
+        return new Builder();
+    }
+
     @Override
     public void applyDto(PostDto postDto, Mapper mapper) {
         this.content = postDto.getContent();
@@ -34,5 +42,19 @@ public class Post extends BaseEntity<PostDto> {
 
     public String getContent() {
         return content;
+    }
+
+
+    public static final class Builder {
+        private String content;
+
+        public Post build() {
+            return new Post(this);
+        }
+
+        public Builder content(String content) {
+            this.content = content;
+            return this;
+        }
     }
 }
