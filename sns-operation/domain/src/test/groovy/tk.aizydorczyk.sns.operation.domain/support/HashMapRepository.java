@@ -51,17 +51,21 @@ public class HashMapRepository<EntityType extends BaseEntity> implements CrudRep
 
     @Override
     public void deleteById(Long id) {
-        entitiesMap.values().removeIf(entity -> entity.getId().equals(id));
+        entitiesMap.values()
+                .removeIf(entity -> entity.getId().equals(id));
     }
 
     @Override
     public void delete(EntityType entity) {
-        entitiesMap.values().remove(entity);
+        final EntityType entityToDelete = entitiesMap.get(entity.getId());
+        final Field deleteField = fetchFieldFromEntity("deleted");
+        deleteField.setAccessible(true);
+        assignValueToEntityField(entityToDelete, deleteField, true);
     }
 
     @Override
     public void deleteAll(Iterable<? extends EntityType> entities) {
-        entities.forEach(entitiesMap.values()::remove);
+        entities.forEach(this::delete);
     }
 
     @Override
@@ -71,24 +75,19 @@ public class HashMapRepository<EntityType extends BaseEntity> implements CrudRep
 
     @Override
     public <S extends EntityType> S save(S entity) {
-        try {
             final BaseEntityListener entityListener = new BaseEntityListener();
             if (isNull(entity.getId())) {
-                final Field idField = BaseEntity.class.getDeclaredField("id");
+                final Field idField = fetchFieldFromEntity("id");
                 idField.setAccessible(true);
                 final long newId = ++idSequence;
-                idField.set(entity, newId);
+                assignValueToEntityField(entity, idField, newId);
                 entityListener.preCreate(entity);
                 return (S) entitiesMap.put(newId, entity);
             } else {
                 entityListener.preUpdate(entity);
                 return (S) entitiesMap.put(entity.getId(), entity);
             }
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
     }
-
 
     @Override
     public <S extends EntityType> List<S> saveAll(Iterable<S> entities) {
@@ -105,5 +104,23 @@ public class HashMapRepository<EntityType extends BaseEntity> implements CrudRep
     @Override
     public boolean existsById(Long id) {
         return entitiesMap.containsKey(id);
+    }
+
+    private void assignValueToEntityField(EntityType entity,
+                                          Field field,
+                                          Object value) {
+        try {
+            field.set(entity, value);
+        } catch (IllegalAccessException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private Field fetchFieldFromEntity(String fieldName) {
+        try {
+            return BaseEntity.class.getDeclaredField(fieldName);
+        } catch (NoSuchFieldException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
