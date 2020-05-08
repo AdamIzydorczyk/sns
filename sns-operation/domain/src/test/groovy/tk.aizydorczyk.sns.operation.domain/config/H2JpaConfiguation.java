@@ -11,7 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan("tk.aizydorczyk.sns.operation.domain")
 @PropertySource("classpath:application-test.properties")
 @EnableAutoConfiguration
-public class H2JpaConfiguation {
+public
+class H2JpaConfiguation {
 
 }
 
