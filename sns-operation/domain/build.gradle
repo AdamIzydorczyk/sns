@@ -4,3 +4,7 @@ dependencies {
     compile project(":sns-common:domain")
     compile project(":sns-operation:infrastructure")
 }
+
+task unitTest( type: Test ) {
+    exclude '**/*ControllerTest*'
+}

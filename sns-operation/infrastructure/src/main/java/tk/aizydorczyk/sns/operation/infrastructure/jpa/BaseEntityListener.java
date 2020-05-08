@@ -5,12 +5,12 @@ import javax.persistence.PreUpdate;
 
 public class BaseEntityListener {
     @PrePersist
-    private void publishCreateEvent(BaseEntity entity) {
+    public void preCreate(BaseEntity entity) {
         entity.auditCreate();
     }
 
     @PreUpdate
-    private void publishUpdateEvent(BaseEntity entity) {
+    public void preUpdate(BaseEntity entity) {
         entity.auditUpdate();
     }
 }
