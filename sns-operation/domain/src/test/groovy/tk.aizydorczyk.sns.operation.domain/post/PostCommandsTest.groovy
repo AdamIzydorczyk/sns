@@ -13,7 +13,7 @@ import java.time.ZoneOffset
 
 import static org.junit.Assert.assertEquals
 
-class CreatePostCommandTest extends Specification {
+class PostCommandsTest extends Specification {
 
     @Shared
     private Mapper mapper

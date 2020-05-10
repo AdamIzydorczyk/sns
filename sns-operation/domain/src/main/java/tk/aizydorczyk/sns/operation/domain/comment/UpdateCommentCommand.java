@@ -10,8 +10,9 @@ import java.util.function.Function;
 class UpdateCommentCommand extends BaseUpdateDependentCommand<CommentDto, Comment, Post> {
     UpdateCommentCommand(Function<Long, Optional<Comment>> findCommentById,
                          Function<Long, Optional<Post>> findPostById,
+                         Function<Comment, Comment> save,
                          Function<Comment, CommentDto> mapToPostDto,
                          Mapper mapper) {
-        super(findCommentById, findPostById, mapToPostDto, mapper);
+        super(findCommentById, findPostById, save, mapToPostDto, mapper);
     }
 }

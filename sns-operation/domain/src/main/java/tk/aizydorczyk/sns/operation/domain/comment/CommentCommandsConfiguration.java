@@ -30,6 +30,7 @@ class CommentCommandsConfiguration {
     public UpdateCommentCommand updateCommentCommand() {
         return new UpdateCommentCommand(commentRepository::findById,
                 postRepository::findById,
+                commentRepository::saveAndFlush,
                 comment -> mapper.map(comment, CommentDto.class),
                 mapper);
     }

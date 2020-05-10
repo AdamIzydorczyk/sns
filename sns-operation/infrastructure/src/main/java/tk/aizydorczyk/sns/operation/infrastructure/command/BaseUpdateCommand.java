@@ -12,12 +12,16 @@ import java.util.function.Function;
 
 public abstract class BaseUpdateCommand<DtoType extends BaseDto, EntityType extends BaseEntity<DtoType>> {
     private final Function<Long, Optional<EntityType>> findById;
+    private final Function<EntityType, EntityType> save;
     private final Function<EntityType, DtoType> mapToPostDto;
     private final Mapper mapper;
 
     protected BaseUpdateCommand(Function<Long, Optional<EntityType>> findById,
-                                Function<EntityType, DtoType> mapToPostDto, Mapper mapper) {
+                                Function<EntityType, EntityType> save,
+                                Function<EntityType, DtoType> mapToPostDto,
+                                Mapper mapper) {
         this.findById = Objects.requireNonNull(findById);
+        this.save = Objects.requireNonNull(save);
         this.mapToPostDto = Objects.requireNonNull(mapToPostDto);
         this.mapper = Objects.requireNonNull(mapper);
     }
@@ -28,6 +32,7 @@ public abstract class BaseUpdateCommand<DtoType extends BaseDto, EntityType exte
                 .orElseThrow(() -> new NoSuchElementException("Post not found"));
         entity.applyDto(postDto, mapper);
         entity.applyAuditingInformation(auditingInformation);
+        save.apply(entity);
         return mapToPostDto.apply(entity);
     }
 }
