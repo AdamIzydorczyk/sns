@@ -17,14 +17,18 @@ public abstract class BaseUpdateDependentCommand<DtoType extends BaseDto,
 
     private final Function<Long, Optional<DependentEntityType>> findDependentEntityById;
     private final Function<Long, Optional<ParentEntity>> findParentById;
+    private final Function<DependentEntityType, DependentEntityType> save;
     private final Function<DependentEntityType, DtoType> mapToDto;
     private final Mapper mapper;
 
     protected BaseUpdateDependentCommand(Function<Long, Optional<DependentEntityType>> findDependentEntityById,
                                          Function<Long, Optional<ParentEntity>> findParentById,
-                                         Function<DependentEntityType, DtoType> mapToDto, Mapper mapper) {
+                                         Function<DependentEntityType, DependentEntityType> save,
+                                         Function<DependentEntityType, DtoType> mapToDto,
+                                         Mapper mapper) {
         this.findDependentEntityById = Objects.requireNonNull(findDependentEntityById);
         this.findParentById = Objects.requireNonNull(findParentById);
+        this.save = Objects.requireNonNull(save);
         this.mapToDto = Objects.requireNonNull(mapToDto);
         this.mapper = Objects.requireNonNull(mapper);
     }
@@ -41,6 +45,7 @@ public abstract class BaseUpdateDependentCommand<DtoType extends BaseDto,
 
         dependentEntity.applyDto(dto, mapper);
         dependentEntity.applyAuditingInformation(auditingInformation);
+        save.apply(dependentEntity);
         return mapToDto.apply(dependentEntity);
     }
 }

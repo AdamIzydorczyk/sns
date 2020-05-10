@@ -8,8 +8,9 @@ import java.util.function.Function;
 
 class UpdatePostCommand extends BaseUpdateCommand<PostDto, Post> {
     UpdatePostCommand(Function<Long, Optional<Post>> findById,
+                      Function<Post, Post> save,
                       Function<Post, PostDto> mapToPostDto,
                       Mapper mapper) {
-        super(findById, mapToPostDto, mapper);
+        super(findById, save, mapToPostDto, mapper);
     }
 }

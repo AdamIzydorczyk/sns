@@ -25,6 +25,7 @@ class PostConfiguration {
     @Bean
     public UpdatePostCommand updatePostCommand() {
         return new UpdatePostCommand(postRepository::findById,
+                postRepository::saveAndFlush,
                 post -> mapper.map(post, PostDto.class),
                 mapper);
     }
