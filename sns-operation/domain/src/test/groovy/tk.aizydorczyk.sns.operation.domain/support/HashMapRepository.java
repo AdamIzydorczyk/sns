@@ -3,14 +3,10 @@ package tk.aizydorczyk.sns.operation.domain.support;
 import org.springframework.data.repository.CrudRepository;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntityListener;
+import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -21,10 +17,12 @@ public class HashMapRepository<EntityType extends BaseEntity> implements CrudRep
 
     private long idSequence = 0;
 
-    public HashMapRepository(List<EntityType> entities) {
-        this.entitiesMap = entities.stream()
-                .peek(entityType -> ++idSequence)
-                .collect(Collectors.toMap(BaseEntity::getId, entity -> entity));
+    public HashMapRepository(List<EntityType> entities,
+                             AuditingInformation auditingInformation) {
+        this.entitiesMap = new HashMap<>();
+        entities.stream()
+                .peek(entity -> entity.applyAuditingInformation(auditingInformation))
+                .forEach(this::save);
     }
 
     public HashMapRepository() {
