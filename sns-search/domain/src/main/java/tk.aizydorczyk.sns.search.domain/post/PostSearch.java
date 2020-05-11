@@ -14,4 +14,12 @@ public class PostSearch extends BaseSearchEntity {
     private String content;
     @OneToMany(mappedBy = "post")
     private List<CommentSearch> comments;
+
+    public String getContent() {
+        return content;
+    }
+
+    public List<CommentSearch> getComments() {
+        return comments;
+    }
 }
