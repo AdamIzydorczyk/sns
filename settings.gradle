@@ -1,7 +1,6 @@
 rootProject.name = 'sns'
 
 include 'sns-api'
-include 'sns-security'
 
 include 'sns-common:domain'
 include 'sns-common:infrastructure'

@@ -13,11 +13,12 @@ import tk.aizydorczyk.sns.common.infrastructure.utils.ClassUtils;
 import java.util.List;
 
 @Configuration
+@SuppressWarnings("rawtypes")
 public class MapperConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MapperConfiguration.class);
 
-    private List<Converter> converters;
+    private final List<Converter> converters;
 
     public MapperConfiguration(List<Converter> converters) {
         this.converters = converters;

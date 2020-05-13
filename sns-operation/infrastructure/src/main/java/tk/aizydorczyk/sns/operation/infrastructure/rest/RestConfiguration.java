@@ -26,12 +26,11 @@ public class RestConfiguration implements WebMvcConfigurer {
         registry.addConverter(new StringToAuditingObjectConverter());
     }
 
-
     class StringToAuditingObjectConverter implements Converter<String, AuditingInformation> {
         @Override
         public AuditingInformation convert(String userUuidText) {
             if (isNull(userUuidText) || isEmpty(userUuidText)) {
-                throw new IllegalStateException("");
+                throw new IllegalStateException("userUuid always mast be provided");
             }
             return new AuditingInformation(UUID.fromString(userUuidText), LocalDateTime.now(clock));
         }

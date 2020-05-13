@@ -5,8 +5,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 public final class AuditingInformation {
-    private UUID userUuid;
-    private LocalDateTime executionTime;
+    private final UUID userUuid;
+    private final LocalDateTime executionTime;
 
     public AuditingInformation(UUID userUuid,
                                LocalDateTime executionTime) {
