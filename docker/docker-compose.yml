@@ -1,7 +1,7 @@
 version: '3.4'
 services:
-  db:
-    container_name: sns-db
+  sns_postgres:
+    container_name: sns-postgres
     image: postgres:12.2
     restart: always
     environment:
@@ -10,3 +10,28 @@ services:
       - POSTGRES_DB=sns
     ports:
       - '5555:5432'
+  sns_zookeeper:
+    container_name: sns-zookeeper
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  sns_kafka:
+    container_name: sns-kafka
+    image: wurstmeister/kafka:2.12-2.4.1
+    ports:
+      - "9094:9094"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: sns_zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://localhost:9094
+      KAFKA_LISTENERS: INSIDE://:9092,OUTSIDE://:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+    depends_on:
+      - sns_zookeeper
+  sns_kafdrop:
+    container_name: sns-kafdrop
+    image: obsidiandynamics/kafdrop:latest
+    ports:
+      - "9000:9000"
+    environment:
+      KAFKA_BROKERCONNECT: "sns_kafka:9092"
