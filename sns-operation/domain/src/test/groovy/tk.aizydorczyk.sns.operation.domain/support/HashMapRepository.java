@@ -72,6 +72,7 @@ public class HashMapRepository<EntityType extends BaseEntity> implements CrudRep
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <S extends EntityType> S save(S entity) {
             final BaseEntityListener entityListener = new BaseEntityListener();
             if (isNull(entity.getId())) {
