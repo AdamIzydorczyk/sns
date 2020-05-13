@@ -1,1 +1,5 @@
 apply from: "$rootProject.projectDir/gradle/spring-base.gradle"
+
+dependencies {
+    compile group: 'org.springframework.kafka', name: 'spring-kafka', version: '2.4.6.RELEASE'
+}
