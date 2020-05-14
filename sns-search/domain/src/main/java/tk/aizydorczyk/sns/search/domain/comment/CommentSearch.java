@@ -13,10 +13,6 @@ public class CommentSearch extends BaseSearchEntity {
 
     private String comment;
 
-    private int pluses;
-
-    private int minuses;
-
     @ManyToOne
     private PostSearch post;
 
@@ -25,14 +21,6 @@ public class CommentSearch extends BaseSearchEntity {
 
     public String getComment() {
         return comment;
-    }
-
-    public int getPluses() {
-        return pluses;
-    }
-
-    public int getMinuses() {
-        return minuses;
     }
 
     public PostSearch getPost() {
