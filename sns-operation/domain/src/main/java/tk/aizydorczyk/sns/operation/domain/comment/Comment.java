@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 public class Comment extends BaseDependentEntity<CommentDto, Post> {
 
     @NotNull
-    private CommentDetails details;
+    private String comment;
 
     @NotNull
     @ManyToOne
@@ -37,7 +37,7 @@ public class Comment extends BaseDependentEntity<CommentDto, Post> {
 
     @Override
     public void applyDto(CommentDto commentDto, Mapper mapper) {
-        this.details = mapper.map(commentDto.getDetails(), CommentDetails.class);
+        this.comment = commentDto.getComment();
     }
 
     @Override
@@ -45,8 +45,8 @@ public class Comment extends BaseDependentEntity<CommentDto, Post> {
         this.post = post;
     }
 
-    public CommentDetails getDetails() {
-        return details;
+    public String getComment() {
+        return comment;
     }
 
     public Post getPost() {

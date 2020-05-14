@@ -8,27 +8,27 @@ import java.util.Objects;
 public class CommentDto extends BaseDto {
 
     @NotNull
-    private CommentsDetailsDto details;
+    private String comment;
 
     public CommentDto() {
     }
 
-    public CommentDto(CommentsDetailsDto details) {
-        this.details = Objects.requireNonNull(details);
+    public CommentDto(String comment) {
+        this.comment = Objects.requireNonNull(comment);
     }
 
-    public CommentsDetailsDto getDetails() {
-        return details;
+    public String getComment() {
+        return comment;
     }
 
-    public void setDetails(CommentsDetailsDto details) {
-        this.details = details;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     @Override
     public String toString() {
         return "CommentDto{" +
-                "details=" + details +
+                "comment=" + comment +
                 '}';
     }
 }
