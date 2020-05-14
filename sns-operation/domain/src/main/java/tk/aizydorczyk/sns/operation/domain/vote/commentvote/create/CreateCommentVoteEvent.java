@@ -5,7 +5,9 @@ import tk.aizydorczyk.sns.operation.infrastructure.event.BaseCreateDependentEven
 import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 
 public class CreateCommentVoteEvent extends BaseCreateDependentEvent<VoteDto, CreateCommentVoteCommand> {
-    public CreateCommentVoteEvent(VoteDto dto, Long parentId, AuditingInformation auditingInformation) {
+    public CreateCommentVoteEvent(VoteDto dto,
+                                  Long parentId,
+                                  AuditingInformation auditingInformation) {
         super(CreateCommentVoteCommand.class, VoteDto.class, dto, parentId, auditingInformation);
     }
 }

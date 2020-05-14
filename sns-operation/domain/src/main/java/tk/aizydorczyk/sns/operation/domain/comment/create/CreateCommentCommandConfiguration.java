@@ -14,7 +14,9 @@ class CreateCommentCommandConfiguration {
     private final PostRepository postRepository;
     private final Mapper mapper;
 
-    public CreateCommentCommandConfiguration(CommentRepository commentRepository, PostRepository postRepository, Mapper mapper) {
+    public CreateCommentCommandConfiguration(CommentRepository commentRepository,
+                                             PostRepository postRepository,
+                                             Mapper mapper) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
         this.mapper = mapper;

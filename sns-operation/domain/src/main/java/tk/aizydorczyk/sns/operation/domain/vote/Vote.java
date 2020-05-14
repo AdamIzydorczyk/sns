@@ -18,7 +18,8 @@ public abstract class Vote<EntityType extends BaseEntity> extends BaseDependentE
         super();
     }
 
-    public Vote(VoteDto dto, Mapper mapper) {
+    public Vote(VoteDto dto,
+                Mapper mapper) {
         super(dto, mapper);
         this.type = dto.getType();
     }
@@ -28,7 +29,8 @@ public abstract class Vote<EntityType extends BaseEntity> extends BaseDependentE
     }
 
     @Override
-    public void applyDto(VoteDto voteDto, Mapper mapper) {
+    public void applyDto(VoteDto voteDto,
+                         Mapper mapper) {
         this.type = voteDto.getType();
     }
 }

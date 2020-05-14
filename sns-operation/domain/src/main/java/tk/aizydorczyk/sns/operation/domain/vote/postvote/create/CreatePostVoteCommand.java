@@ -20,12 +20,15 @@ class CreatePostVoteCommand extends BaseCreateDependentCommand<VoteDto, PostVote
     }
 
     @Override
-    protected PostVote createDependentEntity(VoteDto dto, Mapper mapper) {
+    protected PostVote createDependentEntity(VoteDto dto,
+                                             Mapper mapper) {
         return new PostVote(dto, mapper);
     }
 
     @Override
-    public SystemEvent prepareEvent(VoteDto dto, Long parentId, AuditingInformation auditingInformation) {
+    public SystemEvent prepareEvent(VoteDto dto,
+                                    Long parentId,
+                                    AuditingInformation auditingInformation) {
         return new CreatePostVoteEvent(dto, parentId, auditingInformation);
     }
 }

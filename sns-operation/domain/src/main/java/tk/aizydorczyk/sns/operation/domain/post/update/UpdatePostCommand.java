@@ -19,7 +19,9 @@ class UpdatePostCommand extends BaseUpdateCommand<PostDto, Post> {
     }
 
     @Override
-    public SystemEvent prepareEvent(PostDto dto, Long id, AuditingInformation auditingInformation) {
+    public SystemEvent prepareEvent(PostDto dto,
+                                    Long id,
+                                    AuditingInformation auditingInformation) {
         return new UpdatePostEvent(dto, id, auditingInformation);
     }
 }

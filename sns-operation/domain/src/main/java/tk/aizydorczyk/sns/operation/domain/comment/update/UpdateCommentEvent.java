@@ -5,7 +5,10 @@ import tk.aizydorczyk.sns.operation.infrastructure.event.BaseUpdateDependentEven
 import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 
 public class UpdateCommentEvent extends BaseUpdateDependentEvent<CommentDto, UpdateCommentCommand> {
-    public UpdateCommentEvent(CommentDto dto, Long parentId, Long dependentId, AuditingInformation auditingInformation) {
+    public UpdateCommentEvent(CommentDto dto,
+                              Long parentId,
+                              Long dependentId,
+                              AuditingInformation auditingInformation) {
         super(UpdateCommentCommand.class, CommentDto.class, dto, parentId, dependentId, auditingInformation);
     }
 }

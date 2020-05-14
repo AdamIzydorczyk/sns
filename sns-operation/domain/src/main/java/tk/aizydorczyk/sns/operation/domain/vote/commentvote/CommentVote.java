@@ -27,7 +27,8 @@ public class CommentVote extends Vote<Comment> {
         super();
     }
 
-    public CommentVote(VoteDto dto, Mapper mapper) {
+    public CommentVote(VoteDto dto,
+                       Mapper mapper) {
         super(dto, mapper);
     }
 

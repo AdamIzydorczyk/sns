@@ -27,7 +27,8 @@ public class PostVote extends Vote<Post> {
         super();
     }
 
-    public PostVote(VoteDto dto, Mapper mapper) {
+    public PostVote(VoteDto dto,
+                    Mapper mapper) {
         super(dto, mapper);
     }
 

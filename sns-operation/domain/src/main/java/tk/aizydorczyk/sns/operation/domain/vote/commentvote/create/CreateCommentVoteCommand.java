@@ -20,12 +20,15 @@ class CreateCommentVoteCommand extends BaseCreateDependentCommand<VoteDto, Comme
     }
 
     @Override
-    protected CommentVote createDependentEntity(VoteDto dto, Mapper mapper) {
+    protected CommentVote createDependentEntity(VoteDto dto,
+                                                Mapper mapper) {
         return new CommentVote(dto, mapper);
     }
 
     @Override
-    public SystemEvent prepareEvent(VoteDto dto, Long parentId, AuditingInformation auditingInformation) {
+    public SystemEvent prepareEvent(VoteDto dto,
+                                    Long parentId,
+                                    AuditingInformation auditingInformation) {
         return new CreateCommentVoteEvent(dto, parentId, auditingInformation);
     }
 }

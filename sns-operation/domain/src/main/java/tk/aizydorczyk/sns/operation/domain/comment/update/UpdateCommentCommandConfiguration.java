@@ -14,7 +14,9 @@ class UpdateCommentCommandConfiguration {
     private final PostRepository postRepository;
     private final Mapper mapper;
 
-    public UpdateCommentCommandConfiguration(CommentRepository commentRepository, PostRepository postRepository, Mapper mapper) {
+    public UpdateCommentCommandConfiguration(CommentRepository commentRepository,
+                                             PostRepository postRepository,
+                                             Mapper mapper) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
         this.mapper = mapper;

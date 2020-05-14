@@ -12,7 +12,8 @@ class CreatePostCommandConfiguration {
     private final PostRepository postRepository;
     private final Mapper mapper;
 
-    public CreatePostCommandConfiguration(PostRepository postRepository, Mapper mapper) {
+    public CreatePostCommandConfiguration(PostRepository postRepository,
+                                          Mapper mapper) {
         this.postRepository = postRepository;
         this.mapper = mapper;
     }

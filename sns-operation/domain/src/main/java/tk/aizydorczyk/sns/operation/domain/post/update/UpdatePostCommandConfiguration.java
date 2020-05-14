@@ -12,7 +12,8 @@ class UpdatePostCommandConfiguration {
     private final PostRepository postRepository;
     private final Mapper mapper;
 
-    public UpdatePostCommandConfiguration(PostRepository postRepository, Mapper mapper) {
+    public UpdatePostCommandConfiguration(PostRepository postRepository,
+                                          Mapper mapper) {
         this.postRepository = postRepository;
         this.mapper = mapper;
     }

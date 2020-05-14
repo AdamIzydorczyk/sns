@@ -11,7 +11,8 @@ class DeleteCommentVoteCommandConfiguration {
     private final CommentRepository commentRepository;
     private final CommentVoteRepository commentVoteRepository;
 
-    public DeleteCommentVoteCommandConfiguration(CommentRepository commentRepository, CommentVoteRepository commentVoteRepository) {
+    public DeleteCommentVoteCommandConfiguration(CommentRepository commentRepository,
+                                                 CommentVoteRepository commentVoteRepository) {
         this.commentRepository = commentRepository;
         this.commentVoteRepository = commentVoteRepository;
     }

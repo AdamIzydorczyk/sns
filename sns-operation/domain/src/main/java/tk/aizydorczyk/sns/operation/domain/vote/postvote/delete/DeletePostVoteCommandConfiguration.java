@@ -11,7 +11,8 @@ class DeletePostVoteCommandConfiguration {
     private final PostRepository postRepository;
     private final PostVoteRepository postVoteRepository;
 
-    public DeletePostVoteCommandConfiguration(PostRepository postRepository, PostVoteRepository postVoteRepository) {
+    public DeletePostVoteCommandConfiguration(PostRepository postRepository,
+                                              PostVoteRepository postVoteRepository) {
         this.postRepository = postRepository;
         this.postVoteRepository = postVoteRepository;
     }
