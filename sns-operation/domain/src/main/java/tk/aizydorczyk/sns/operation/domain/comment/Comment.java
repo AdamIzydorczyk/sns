@@ -31,12 +31,14 @@ public class Comment extends BaseDependentEntity<CommentDto, Post> {
         super();
     }
 
-    public Comment(CommentDto commentDto, Mapper mapper) {
+    public Comment(CommentDto commentDto,
+                   Mapper mapper) {
         super(commentDto, mapper);
     }
 
     @Override
-    public void applyDto(CommentDto commentDto, Mapper mapper) {
+    public void applyDto(CommentDto commentDto,
+                         Mapper mapper) {
         this.comment = commentDto.getComment();
     }
 

@@ -17,12 +17,14 @@ class CreatePostCommand extends BaseCreateCommand<PostDto, Post> {
     }
 
     @Override
-    protected Post createEntity(PostDto postDto, Mapper mapper) {
+    protected Post createEntity(PostDto postDto,
+                                Mapper mapper) {
         return new Post(postDto, mapper);
     }
 
     @Override
-    public SystemEvent prepareEvent(PostDto dto, AuditingInformation auditingInformation) {
+    public SystemEvent prepareEvent(PostDto dto,
+                                    AuditingInformation auditingInformation) {
         return new CreatePostEvent(dto, auditingInformation);
     }
 }

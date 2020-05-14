@@ -12,7 +12,8 @@ class DeletePostCommand extends BaseDeleteCommand {
     }
 
     @Override
-    public SystemEvent prepareEvent(Long id, AuditingInformation auditingInformation) {
+    public SystemEvent prepareEvent(Long id,
+                                    AuditingInformation auditingInformation) {
         return new DeletePostEvent(id, auditingInformation);
     }
 }

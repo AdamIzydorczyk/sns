@@ -4,7 +4,9 @@ import tk.aizydorczyk.sns.operation.infrastructure.event.BaseDeleteDependentEven
 import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 
 public class DeletePostVoteEvent extends BaseDeleteDependentEvent<DeletePostVoteCommand> {
-    public DeletePostVoteEvent(Long parentId, Long dependentId, AuditingInformation auditingInformation) {
+    public DeletePostVoteEvent(Long parentId,
+                               Long dependentId,
+                               AuditingInformation auditingInformation) {
         super(DeletePostVoteCommand.class, parentId, dependentId, auditingInformation);
     }
 }

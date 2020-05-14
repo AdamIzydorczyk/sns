@@ -17,7 +17,9 @@ class DeleteCommentCommand extends BaseDeleteDependentCommand<Post> {
     }
 
     @Override
-    public SystemEvent prepareEvent(Long parentId, Long dependentId, AuditingInformation auditingInformation) {
+    public SystemEvent prepareEvent(Long parentId,
+                                    Long dependentId,
+                                    AuditingInformation auditingInformation) {
         return new DeleteCommentEvent(parentId, dependentId, auditingInformation);
     }
 }

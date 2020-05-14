@@ -23,7 +23,8 @@ public class Post extends BaseEntity<PostDto> {
         super();
     }
 
-    public Post(PostDto postDto, Mapper mapper) {
+    public Post(PostDto postDto,
+                Mapper mapper) {
         super(postDto, mapper);
     }
 

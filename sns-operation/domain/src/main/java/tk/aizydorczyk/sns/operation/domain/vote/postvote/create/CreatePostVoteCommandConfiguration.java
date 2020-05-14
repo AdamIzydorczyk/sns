@@ -14,7 +14,9 @@ class CreatePostVoteCommandConfiguration {
     private final PostVoteRepository postVoteRepository;
     private final Mapper mapper;
 
-    public CreatePostVoteCommandConfiguration(PostRepository postRepository, PostVoteRepository postVoteRepository, Mapper mapper) {
+    public CreatePostVoteCommandConfiguration(PostRepository postRepository,
+                                              PostVoteRepository postVoteRepository,
+                                              Mapper mapper) {
         this.postRepository = postRepository;
         this.postVoteRepository = postVoteRepository;
         this.mapper = mapper;

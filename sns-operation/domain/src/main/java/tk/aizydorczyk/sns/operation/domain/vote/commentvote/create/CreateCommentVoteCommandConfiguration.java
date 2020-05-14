@@ -14,7 +14,9 @@ class CreateCommentVoteCommandConfiguration {
     private final CommentVoteRepository commentVoteRepository;
     private final Mapper mapper;
 
-    public CreateCommentVoteCommandConfiguration(CommentRepository commentRepository, CommentVoteRepository commentVoteRepository, Mapper mapper) {
+    public CreateCommentVoteCommandConfiguration(CommentRepository commentRepository,
+                                                 CommentVoteRepository commentVoteRepository,
+                                                 Mapper mapper) {
         this.commentRepository = commentRepository;
         this.commentVoteRepository = commentVoteRepository;
         this.mapper = mapper;

@@ -11,7 +11,8 @@ class DeleteCommentCommandConfiguration {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
-    public DeleteCommentCommandConfiguration(CommentRepository commentRepository, PostRepository postRepository) {
+    public DeleteCommentCommandConfiguration(CommentRepository commentRepository,
+                                             PostRepository postRepository) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
     }

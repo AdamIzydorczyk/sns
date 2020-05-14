@@ -16,7 +16,9 @@ class DeletePostVoteCommand extends BaseDeleteDependentCommand<Post> {
     }
 
     @Override
-    public SystemEvent prepareEvent(Long parentId, Long dependentId, AuditingInformation auditingInformation) {
+    public SystemEvent prepareEvent(Long parentId,
+                                    Long dependentId,
+                                    AuditingInformation auditingInformation) {
         return new DeletePostVoteEvent(parentId, dependentId, auditingInformation);
     }
 }
