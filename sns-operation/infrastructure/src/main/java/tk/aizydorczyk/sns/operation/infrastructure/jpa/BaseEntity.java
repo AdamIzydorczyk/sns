@@ -6,15 +6,7 @@ import tk.aizydorczyk.sns.common.infrastructure.utils.ClassUtils;
 import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
 
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -35,11 +27,11 @@ public abstract class BaseEntity<TargetDtoType extends BaseDto> implements Mappe
 
     @NotNull
     @Column(nullable = false)
-    private boolean deleted = false;
+    private final boolean deleted = false;
 
     @Version
     @Column(columnDefinition = "bigint NOT NULL DEFAULT 0", nullable = false)
-    private long version = 0L;
+    private final long version = 0L;
 
     @NotNull
     private UUID createdBy;
@@ -98,7 +90,7 @@ public abstract class BaseEntity<TargetDtoType extends BaseDto> implements Mappe
     }
 
     public void applyAuditingInformation(AuditingInformation auditingInformation) {
-        this.time = auditingInformation.getExecutionTime();
+        this.time = auditingInformation.collectExecutionDateTime();
         this.userUuid = auditingInformation.getUserUuid();
     }
 
