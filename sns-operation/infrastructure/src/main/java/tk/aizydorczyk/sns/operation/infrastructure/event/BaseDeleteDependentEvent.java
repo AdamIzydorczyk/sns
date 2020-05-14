@@ -5,25 +5,25 @@ import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 
 import java.util.Objects;
 
-public class DeleteDependentCommandEvent implements SystemEvent {
+public abstract class BaseDeleteDependentEvent<CommandType extends BaseDeleteDependentCommand<?>> implements SystemEvent {
 
-    private final Class<? extends BaseDeleteDependentCommand> deleteDependentCommandClass;
+    private final Class<CommandType> commandClass;
     private final Long parentId;
     private final Long dependentId;
     private final AuditingInformation auditingInformation;
 
-    public DeleteDependentCommandEvent(Class<? extends BaseDeleteDependentCommand> deleteDependentCommandClass,
-                                       Long parentId,
-                                       Long dependentId,
-                                       AuditingInformation auditingInformation) {
-        this.deleteDependentCommandClass = Objects.requireNonNull(deleteDependentCommandClass);
+    public BaseDeleteDependentEvent(Class<CommandType> commandClass,
+                                    Long parentId,
+                                    Long dependentId,
+                                    AuditingInformation auditingInformation) {
+        this.commandClass = Objects.requireNonNull(commandClass);
         this.parentId = Objects.requireNonNull(parentId);
         this.dependentId = Objects.requireNonNull(dependentId);
         this.auditingInformation = Objects.requireNonNull(auditingInformation);
     }
 
-    public Class<? extends BaseDeleteDependentCommand> getDeleteDependentCommandClass() {
-        return deleteDependentCommandClass;
+    public Class<CommandType> getCommandClass() {
+        return commandClass;
     }
 
     public Long getParentId() {

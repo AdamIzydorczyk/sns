@@ -1,6 +1,7 @@
 package tk.aizydorczyk.sns.operation.infrastructure.command;
 
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
+import tk.aizydorczyk.sns.operation.infrastructure.event.SystemEvent;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
 import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
@@ -35,4 +36,6 @@ public abstract class BaseUpdateCommand<DtoType extends BaseDto, EntityType exte
         save.apply(entity);
         return mapToPostDto.apply(entity);
     }
+
+    public abstract SystemEvent prepareEvent(DtoType dto, Long id, AuditingInformation auditingInformation);
 }

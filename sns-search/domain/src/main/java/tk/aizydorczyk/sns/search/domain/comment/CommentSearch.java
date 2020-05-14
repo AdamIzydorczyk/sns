@@ -43,4 +43,12 @@ public class CommentSearch extends BaseSearchEntity {
     public List<VoteSearch> getVotes() {
         return votes;
     }
+
+    public Long getUpVotesCount() {
+        return upVotesCount;
+    }
+
+    public Long getDownVotesCount() {
+        return downVotesCount;
+    }
 }

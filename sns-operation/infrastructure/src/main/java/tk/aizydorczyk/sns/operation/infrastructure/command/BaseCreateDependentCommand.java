@@ -1,6 +1,7 @@
 package tk.aizydorczyk.sns.operation.infrastructure.command;
 
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
+import tk.aizydorczyk.sns.operation.infrastructure.event.SystemEvent;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseDependentEntity;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
 import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
@@ -13,7 +14,7 @@ import java.util.function.Function;
 
 public abstract class BaseCreateDependentCommand<DtoType extends BaseDto,
         DependentEntityType extends BaseDependentEntity<DtoType, ParentEntityType>,
-        ParentEntityType extends BaseEntity> {
+        ParentEntityType extends BaseEntity<?>> {
 
     private final Function<DependentEntityType, DependentEntityType> save;
     private final Function<DependentEntityType, DtoType> mapToDto;
@@ -43,4 +44,6 @@ public abstract class BaseCreateDependentCommand<DtoType extends BaseDto,
     }
 
     protected abstract DependentEntityType createDependentEntity(DtoType dto, Mapper mapper);
+
+    public abstract SystemEvent prepareEvent(DtoType dto, Long parentId, AuditingInformation auditingInformation);
 }

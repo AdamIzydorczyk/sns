@@ -5,22 +5,22 @@ import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 
 import java.util.Objects;
 
-public class DeleteCommandEvent implements SystemEvent {
+public abstract class BaseDeleteEvent<CommandType extends BaseDeleteCommand> implements SystemEvent {
 
-    private final Class<? extends BaseDeleteCommand> deleteCommandClass;
+    private final Class<CommandType> commandClass;
     private final Long id;
     private final AuditingInformation auditingInformation;
 
-    public DeleteCommandEvent(Class<? extends BaseDeleteCommand> deleteCommandClass,
-                              Long id,
-                              AuditingInformation auditingInformation) {
-        this.deleteCommandClass = Objects.requireNonNull(deleteCommandClass);
+    public BaseDeleteEvent(Class<CommandType> commandClass,
+                           Long id,
+                           AuditingInformation auditingInformation) {
+        this.commandClass = Objects.requireNonNull(commandClass);
         this.id = Objects.requireNonNull(id);
         this.auditingInformation = Objects.requireNonNull(auditingInformation);
     }
 
-    public Class<? extends BaseDeleteCommand> getDeleteCommandClass() {
-        return deleteCommandClass;
+    public Class<CommandType> getCommandClass() {
+        return commandClass;
     }
 
     public Long getId() {

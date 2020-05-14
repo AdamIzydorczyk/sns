@@ -15,9 +15,6 @@ import tk.aizydorczyk.sns.common.infrastructure.utils.TransactionUtils;
 import tk.aizydorczyk.sns.operation.infrastructure.command.BaseCreateCommand;
 import tk.aizydorczyk.sns.operation.infrastructure.command.BaseDeleteCommand;
 import tk.aizydorczyk.sns.operation.infrastructure.command.BaseUpdateCommand;
-import tk.aizydorczyk.sns.operation.infrastructure.event.CreateCommandEvent;
-import tk.aizydorczyk.sns.operation.infrastructure.event.DeleteCommandEvent;
-import tk.aizydorczyk.sns.operation.infrastructure.event.UpdateCommandEvent;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
 
 import javax.validation.Valid;
@@ -55,10 +52,7 @@ public abstract class BaseController<DtoType extends BaseDto,
                           @RequestHeader(value = "userUuid") AuditingInformation auditingInformation) {
         LOGGER.info("Create in: {} body: {}", getClass().getSimpleName(), dto);
         return transactionUtils.runInTransaction(() -> {
-            eventPublisher.publishEvent(new CreateCommandEvent<>(createCommand.getClass(),
-                    dto.getClass(),
-                    dto,
-                    auditingInformation));
+            eventPublisher.publishEvent(createCommand.prepareEvent(dto, auditingInformation));
             return createCommand.execute(dto, auditingInformation);
         });
     }
@@ -69,7 +63,7 @@ public abstract class BaseController<DtoType extends BaseDto,
                           @RequestHeader(value = "userUuid") AuditingInformation auditingInformation) {
         LOGGER.info("Update in: {} id: {} body: {}", getClass().getSimpleName(), id, dto);
         return transactionUtils.runInTransaction(() -> {
-            eventPublisher.publishEvent(new UpdateCommandEvent<>(updateCommand.getClass(), dto.getClass(), dto, id, auditingInformation));
+            eventPublisher.publishEvent(updateCommand.prepareEvent(dto, id, auditingInformation));
             return updateCommand.execute(id, dto, auditingInformation);
         });
     }
@@ -79,7 +73,7 @@ public abstract class BaseController<DtoType extends BaseDto,
                        @RequestHeader(value = "userUuid") AuditingInformation auditingInformation) {
         LOGGER.info("Delete in: {} id: {}", getClass().getSimpleName(), id);
         transactionUtils.runInTransaction(() -> {
-            eventPublisher.publishEvent(new DeleteCommandEvent(deleteCommand.getClass(), id, auditingInformation));
+            eventPublisher.publishEvent(deleteCommand.prepareEvent(id, auditingInformation));
             deleteCommand.execute(id);
         });
     }

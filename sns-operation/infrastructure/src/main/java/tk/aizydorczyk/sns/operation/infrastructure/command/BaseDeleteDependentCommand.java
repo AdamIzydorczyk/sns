@@ -1,6 +1,8 @@
 package tk.aizydorczyk.sns.operation.infrastructure.command;
 
+import tk.aizydorczyk.sns.operation.infrastructure.event.SystemEvent;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
+import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -8,7 +10,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public abstract class BaseDeleteDependentCommand<ParentEntityType extends BaseEntity> {
+public abstract class BaseDeleteDependentCommand<ParentEntityType extends BaseEntity<?>> {
     private final Consumer<Long> deleteById;
     private final Function<Long, Optional<ParentEntityType>> findParentById;
 
@@ -25,4 +27,6 @@ public abstract class BaseDeleteDependentCommand<ParentEntityType extends BaseEn
 
         deleteById.accept(entityId);
     }
+
+    public abstract SystemEvent prepareEvent(Long parentId, Long dependentId, AuditingInformation auditingInformation);
 }
