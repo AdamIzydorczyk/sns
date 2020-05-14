@@ -1,6 +1,6 @@
 apply from: "$rootProject.projectDir/gradle/spring-base.gradle"
 
 dependencies {
-    compile 'com.introproventures:graphql-jpa-query-boot-starter:0.4.7'
-    compile 'com.introproventures:graphql-jpa-query-graphiql:0.4.7'
+    compile 'com.introproventures:graphql-jpa-query-boot-starter:0.4.8'
+    compile 'com.introproventures:graphql-jpa-query-graphiql:0.4.8'
 }
