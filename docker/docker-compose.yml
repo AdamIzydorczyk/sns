@@ -35,3 +35,4 @@ services:
       - "9000:9000"
     environment:
       KAFKA_BROKERCONNECT: "sns_kafka:9092"
+      

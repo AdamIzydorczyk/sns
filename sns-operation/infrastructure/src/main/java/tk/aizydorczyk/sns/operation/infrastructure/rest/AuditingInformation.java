@@ -1,6 +1,7 @@
 package tk.aizydorczyk.sns.operation.infrastructure.rest;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -18,7 +19,11 @@ public final class AuditingInformation {
         return userUuid;
     }
 
-    public LocalDateTime getExecutionTime() {
+    public LocalDateTime collectExecutionDateTime() {
         return executionTime;
+    }
+
+    public Long getExecutionTime() {
+        return executionTime.toEpochSecond(ZoneOffset.UTC);
     }
 }
