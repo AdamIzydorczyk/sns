@@ -22,4 +22,19 @@ public class VoteSearch extends BaseSearchEntity {
 
     @ManyToOne
     private PostSearch post;
+
+    public VoteSearch() {
+    }
+
+    public VoteType getType() {
+        return type;
+    }
+
+    public CommentSearch getComment() {
+        return comment;
+    }
+
+    public PostSearch getPost() {
+        return post;
+    }
 }
