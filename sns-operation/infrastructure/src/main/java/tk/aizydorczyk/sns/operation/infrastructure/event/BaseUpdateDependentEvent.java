@@ -6,22 +6,22 @@ import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
 
 import java.util.Objects;
 
-public class UpdateDependentCommandEvent<DtoType extends BaseDto> implements SystemEvent {
+public abstract class BaseUpdateDependentEvent<DtoType extends BaseDto, CommandType extends BaseUpdateDependentCommand<DtoType, ?, ?>> implements SystemEvent {
 
-    private final Class<? extends BaseUpdateDependentCommand> updateDependentCommandClass;
-    private final Class<? extends BaseDto> dtoClass;
+    private final Class<CommandType> commandClass;
+    private final Class<DtoType> dtoClass;
     private final DtoType dto;
     private final Long parentId;
     private final Long dependentId;
     private final AuditingInformation auditingInformation;
 
-    public UpdateDependentCommandEvent(Class<? extends BaseUpdateDependentCommand> updateDependentCommandClass,
-                                       Class<? extends BaseDto> dtoClass,
-                                       DtoType dto,
-                                       Long parentId,
-                                       Long dependentId,
-                                       AuditingInformation auditingInformation) {
-        this.updateDependentCommandClass = Objects.requireNonNull(updateDependentCommandClass);
+    public BaseUpdateDependentEvent(Class<CommandType> commandClass,
+                                    Class<DtoType> dtoClass,
+                                    DtoType dto,
+                                    Long parentId,
+                                    Long dependentId,
+                                    AuditingInformation auditingInformation) {
+        this.commandClass = Objects.requireNonNull(commandClass);
         this.dtoClass = Objects.requireNonNull(dtoClass);
         this.dto = Objects.requireNonNull(dto);
         this.parentId = Objects.requireNonNull(parentId);
@@ -29,11 +29,11 @@ public class UpdateDependentCommandEvent<DtoType extends BaseDto> implements Sys
         this.auditingInformation = Objects.requireNonNull(auditingInformation);
     }
 
-    public Class<? extends BaseUpdateDependentCommand> getUpdateDependentCommandClass() {
-        return updateDependentCommandClass;
+    public Class<CommandType> getCommandClass() {
+        return commandClass;
     }
 
-    public Class<? extends BaseDto> getDtoClass() {
+    public Class<DtoType> getDtoClass() {
         return dtoClass;
     }
 

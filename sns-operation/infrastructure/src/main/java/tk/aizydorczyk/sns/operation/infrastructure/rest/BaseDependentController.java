@@ -15,9 +15,6 @@ import tk.aizydorczyk.sns.common.infrastructure.utils.TransactionUtils;
 import tk.aizydorczyk.sns.operation.infrastructure.command.BaseCreateDependentCommand;
 import tk.aizydorczyk.sns.operation.infrastructure.command.BaseDeleteDependentCommand;
 import tk.aizydorczyk.sns.operation.infrastructure.command.BaseUpdateDependentCommand;
-import tk.aizydorczyk.sns.operation.infrastructure.event.CreateDependentCommandEvent;
-import tk.aizydorczyk.sns.operation.infrastructure.event.DeleteDependentCommandEvent;
-import tk.aizydorczyk.sns.operation.infrastructure.event.UpdateDependentCommandEvent;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseDependentEntity;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
 
@@ -25,7 +22,7 @@ import javax.validation.Valid;
 
 public abstract class BaseDependentController<DtoType extends BaseDto,
         DependentEntityType extends BaseDependentEntity<DtoType, ParentEntityType>,
-        ParentEntityType extends BaseEntity,
+        ParentEntityType extends BaseEntity<?>,
         CreateDependentEntityCommandType extends BaseCreateDependentCommand<DtoType, DependentEntityType, ParentEntityType>,
         UpdateDependentEntityCommandType extends BaseUpdateDependentCommand<DtoType, DependentEntityType, ParentEntityType>,
         DeleteDependentEntityCommandType extends BaseDeleteDependentCommand<ParentEntityType>> {
@@ -58,9 +55,7 @@ public abstract class BaseDependentController<DtoType extends BaseDto,
                           @RequestHeader(value = "userUuid") AuditingInformation auditingInformation) {
         LOGGER.info("Create in: {} parentId: {} body: {}", getClass().getSimpleName(), parentId, dto);
         return transactionUtils.runInTransaction(() -> {
-            eventPublisher.publishEvent(new CreateDependentCommandEvent<>(createDependentCommand.getClass(),
-                    dto.getClass(),
-                    dto,
+            eventPublisher.publishEvent(createDependentCommand.prepareEvent(dto,
                     parentId,
                     auditingInformation));
             return createDependentCommand.execute(parentId, dto, auditingInformation);
@@ -74,8 +69,7 @@ public abstract class BaseDependentController<DtoType extends BaseDto,
                           @RequestHeader(value = "userUuid") AuditingInformation auditingInformation) {
         LOGGER.info("Update in: {} parentId: {} dependentId: {} body: {}", getClass().getSimpleName(), parentId, dependentId, dto);
         return transactionUtils.runInTransaction(() -> {
-            eventPublisher.publishEvent(new UpdateDependentCommandEvent<>(updateDependentCommand.getClass(),
-                    dto.getClass(),
+            eventPublisher.publishEvent(updateDependentCommand.prepareEvent(
                     dto,
                     parentId,
                     dependentId,
@@ -90,7 +84,7 @@ public abstract class BaseDependentController<DtoType extends BaseDto,
                        @RequestHeader(value = "userUuid") AuditingInformation auditingInformation) {
         LOGGER.info("Delete in: {} parentId: {} dependentId: {}", getClass().getSimpleName(), parentId, dependentId);
         transactionUtils.runInTransaction(() -> {
-            eventPublisher.publishEvent(new DeleteDependentCommandEvent(deleteDependentCommand.getClass(),
+            eventPublisher.publishEvent(deleteDependentCommand.prepareEvent(
                     parentId,
                     dependentId,
                     auditingInformation));

@@ -6,28 +6,28 @@ import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
 
 import java.util.Objects;
 
-public class CreateCommandEvent<DtoType extends BaseDto> implements SystemEvent {
+public abstract class BaseCreateEvent<DtoType extends BaseDto, CommandType extends BaseCreateCommand<DtoType, ?>> implements SystemEvent {
 
-    private final Class<? extends BaseCreateCommand> createCommandClass;
-    private final Class<? extends BaseDto> dtoClass;
+    private final Class<CommandType> commandClass;
+    private final Class<DtoType> dtoClass;
     private final DtoType dto;
     private final AuditingInformation auditingInformation;
 
-    public CreateCommandEvent(Class<? extends BaseCreateCommand> createCommandClass,
-                              Class<? extends BaseDto> dtoClass,
-                              DtoType dto,
-                              AuditingInformation auditingInformation) {
-        this.createCommandClass = Objects.requireNonNull(createCommandClass);
+    public BaseCreateEvent(Class<CommandType> commandClass,
+                           Class<DtoType> dtoClass,
+                           DtoType dto,
+                           AuditingInformation auditingInformation) {
+        this.commandClass = Objects.requireNonNull(commandClass);
         this.dtoClass = Objects.requireNonNull(dtoClass);
         this.dto = Objects.requireNonNull(dto);
         this.auditingInformation = Objects.requireNonNull(auditingInformation);
     }
 
-    public Class<? extends BaseCreateCommand> getCreateCommandClass() {
-        return createCommandClass;
+    public Class<CommandType> getCommandClass() {
+        return commandClass;
     }
 
-    public Class<? extends BaseDto> getDtoClass() {
+    public Class<DtoType> getDtoClass() {
         return dtoClass;
     }
 

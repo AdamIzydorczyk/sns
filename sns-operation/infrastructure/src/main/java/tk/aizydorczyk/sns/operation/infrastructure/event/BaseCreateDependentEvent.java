@@ -6,31 +6,31 @@ import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
 
 import java.util.Objects;
 
-public class CreateDependentCommandEvent<DtoType extends BaseDto> implements SystemEvent {
+public abstract class BaseCreateDependentEvent<DtoType extends BaseDto, CommandType extends BaseCreateDependentCommand<DtoType, ?, ?>> implements SystemEvent {
 
-    private final Class<? extends BaseCreateDependentCommand> createDependentCommandClass;
-    private final Class<? extends BaseDto> dtoClass;
+    private final Class<CommandType> commandClass;
+    private final Class<DtoType> dtoClass;
     private final DtoType dto;
     private final Long parentId;
     private final AuditingInformation auditingInformation;
 
-    public CreateDependentCommandEvent(Class<? extends BaseCreateDependentCommand> createDependentCommandClass,
-                                       Class<? extends BaseDto> dtoClass,
-                                       DtoType dto,
-                                       Long parentId,
-                                       AuditingInformation auditingInformation) {
-        this.createDependentCommandClass = Objects.requireNonNull(createDependentCommandClass);
+    public BaseCreateDependentEvent(Class<CommandType> commandClass,
+                                    Class<DtoType> dtoClass,
+                                    DtoType dto,
+                                    Long parentId,
+                                    AuditingInformation auditingInformation) {
+        this.commandClass = Objects.requireNonNull(commandClass);
         this.dtoClass = Objects.requireNonNull(dtoClass);
         this.dto = Objects.requireNonNull(dto);
         this.parentId = Objects.requireNonNull(parentId);
         this.auditingInformation = Objects.requireNonNull(auditingInformation);
     }
 
-    public Class<? extends BaseCreateDependentCommand> getCreateDependentCommandClass() {
-        return createDependentCommandClass;
+    public Class<CommandType> getCommandClass() {
+        return commandClass;
     }
 
-    public Class<? extends BaseDto> getDtoClass() {
+    public Class<DtoType> getDtoClass() {
         return dtoClass;
     }
 

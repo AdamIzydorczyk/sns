@@ -1,6 +1,7 @@
 package tk.aizydorczyk.sns.operation.infrastructure.command;
 
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
+import tk.aizydorczyk.sns.operation.infrastructure.event.SystemEvent;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
 import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
@@ -9,7 +10,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 public abstract class BaseCreateCommand<DtoType extends BaseDto,
-        EntityType extends BaseEntity> {
+        EntityType extends BaseEntity<DtoType>> {
 
     private final Function<EntityType, EntityType> save;
     private final Function<EntityType, DtoType> mapToDto;
@@ -31,5 +32,7 @@ public abstract class BaseCreateCommand<DtoType extends BaseDto,
         return mapToDto.apply(entity);
     }
 
-    protected abstract EntityType createEntity(DtoType postDto, Mapper mapper);
+    protected abstract EntityType createEntity(DtoType dto, Mapper mapper);
+
+    public abstract SystemEvent prepareEvent(DtoType dto, AuditingInformation auditingInformation);
 }

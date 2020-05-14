@@ -1,6 +1,7 @@
 package tk.aizydorczyk.sns.operation.infrastructure.command;
 
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
+import tk.aizydorczyk.sns.operation.infrastructure.event.SystemEvent;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseDependentEntity;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
 import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
@@ -13,7 +14,7 @@ import java.util.function.Function;
 
 public abstract class BaseUpdateDependentCommand<DtoType extends BaseDto,
         DependentEntityType extends BaseDependentEntity<DtoType, ParentEntity>,
-        ParentEntity extends BaseEntity> {
+        ParentEntity extends BaseEntity<?>> {
 
     private final Function<Long, Optional<DependentEntityType>> findDependentEntityById;
     private final Function<Long, Optional<ParentEntity>> findParentById;
@@ -48,4 +49,6 @@ public abstract class BaseUpdateDependentCommand<DtoType extends BaseDto,
         save.apply(dependentEntity);
         return mapToDto.apply(dependentEntity);
     }
+
+    public abstract SystemEvent prepareEvent(DtoType dto, Long parentId, Long dependentId, AuditingInformation auditingInformation);
 }
