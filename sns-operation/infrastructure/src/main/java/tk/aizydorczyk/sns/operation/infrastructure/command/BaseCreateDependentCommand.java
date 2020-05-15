@@ -31,9 +31,10 @@ public abstract class BaseCreateDependentCommand<DtoType extends BaseDto,
         this.mapper = Objects.requireNonNull(mapper);
     }
 
-    public final DtoType execute(Long postId, DtoType commentDto,
+    public final DtoType execute(Long parentId,
+                                 DtoType commentDto,
                                  AuditingInformation auditingInformation) {
-        final ParentEntityType parent = findParentEntityById.apply(postId)
+        final ParentEntityType parent = findParentEntityById.apply(parentId)
                 .orElseThrow(() -> new NoSuchElementException("Parent not found"));
 
         final DependentEntityType dependentEntity = createDependentEntity(commentDto, mapper);

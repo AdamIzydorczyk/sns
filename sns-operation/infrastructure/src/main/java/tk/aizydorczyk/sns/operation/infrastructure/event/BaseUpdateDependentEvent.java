@@ -16,14 +16,13 @@ public abstract class BaseUpdateDependentEvent<DtoType extends BaseDto, CommandT
     private final AuditingInformation auditingInformation;
 
     public BaseUpdateDependentEvent(Class<CommandType> commandClass,
-                                    Class<DtoType> dtoClass,
                                     DtoType dto,
                                     Long parentId,
                                     Long dependentId,
                                     AuditingInformation auditingInformation) {
         this.commandClass = Objects.requireNonNull(commandClass);
-        this.dtoClass = Objects.requireNonNull(dtoClass);
         this.dto = Objects.requireNonNull(dto);
+        this.dtoClass = (Class<DtoType>) dto.getClass();
         this.parentId = Objects.requireNonNull(parentId);
         this.dependentId = Objects.requireNonNull(dependentId);
         this.auditingInformation = Objects.requireNonNull(auditingInformation);

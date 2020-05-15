@@ -24,7 +24,9 @@ class CreatePostVoteCommandConfiguration {
 
     @Bean
     public CreatePostVoteCommand createPostVoteCommand() {
-        return new CreatePostVoteCommand(postRepository::findById,
+        return new CreatePostVoteCommand(
+                postVoteRepository::findByPostIdAndCreatedBy,
+                postRepository::findById,
                 postVoteRepository::save,
                 vote -> mapper.map(vote, VoteDto.class),
                 mapper);

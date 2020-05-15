@@ -9,6 +9,6 @@ public class UpdateCommentEvent extends BaseUpdateDependentEvent<CommentDto, Upd
                               Long parentId,
                               Long dependentId,
                               AuditingInformation auditingInformation) {
-        super(UpdateCommentCommand.class, CommentDto.class, dto, parentId, dependentId, auditingInformation);
+        super(UpdateCommentCommand.class, dto, parentId, dependentId, auditingInformation);
     }
 }

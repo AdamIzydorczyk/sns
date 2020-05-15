@@ -8,6 +8,6 @@ public class CreateCommentEvent extends BaseCreateDependentEvent<CommentDto, Cre
     public CreateCommentEvent(CommentDto dto,
                               Long parentId,
                               AuditingInformation auditingInformation) {
-        super(CreateCommentCommand.class, CommentDto.class, dto, parentId, auditingInformation);
+        super(CreateCommentCommand.class, dto, parentId, auditingInformation);
     }
 }
