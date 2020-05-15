@@ -7,6 +7,6 @@ import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 public class CreatePostEvent extends BaseCreateEvent<PostDto, CreatePostCommand> {
     public CreatePostEvent(PostDto dto,
                            AuditingInformation auditingInformation) {
-        super(CreatePostCommand.class, PostDto.class, dto, auditingInformation);
+        super(CreatePostCommand.class, dto, auditingInformation);
     }
 }

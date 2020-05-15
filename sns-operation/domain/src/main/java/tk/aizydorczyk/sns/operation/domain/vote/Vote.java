@@ -1,6 +1,6 @@
 package tk.aizydorczyk.sns.operation.domain.vote;
 
-import tk.aizydorczyk.sns.common.domain.vote.VoteType;
+import tk.aizydorczyk.sns.common.domain.vote.VoteTypes;
 import tk.aizydorczyk.sns.common.infrastructure.mapper.Mapper;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseDependentEntity;
 import tk.aizydorczyk.sns.operation.infrastructure.jpa.BaseEntity;
@@ -10,9 +10,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class Vote<EntityType extends BaseEntity> extends BaseDependentEntity<VoteDto, EntityType> {
+public abstract class Vote<ParentEntityType extends BaseEntity<?>> extends BaseDependentEntity<VoteDto, ParentEntityType> {
     @Enumerated(value = EnumType.STRING)
-    private VoteType type;
+    private VoteTypes type;
 
     public Vote() {
         super();
@@ -24,7 +24,7 @@ public abstract class Vote<EntityType extends BaseEntity> extends BaseDependentE
         this.type = dto.getType();
     }
 
-    public VoteType getType() {
+    public VoteTypes getType() {
         return type;
     }
 
@@ -32,5 +32,11 @@ public abstract class Vote<EntityType extends BaseEntity> extends BaseDependentE
     public void applyDto(VoteDto voteDto,
                          Mapper mapper) {
         this.type = voteDto.getType();
+    }
+
+    public void changeType(VoteTypes newType) {
+        if (this.type != newType) {
+            this.type = newType;
+        }
     }
 }

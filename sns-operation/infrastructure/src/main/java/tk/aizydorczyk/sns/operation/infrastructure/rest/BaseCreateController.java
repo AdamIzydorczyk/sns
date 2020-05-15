@@ -25,7 +25,9 @@ public abstract class BaseCreateController<DtoType extends BaseDto,
     private final TransactionUtils transactionUtils;
     private final ApplicationEventPublisher eventPublisher;
 
-    public BaseCreateController(CreateCommand createCommand, TransactionUtils transactionUtils, ApplicationEventPublisher eventPublisher) {
+    public BaseCreateController(CreateCommand createCommand,
+                                TransactionUtils transactionUtils,
+                                ApplicationEventPublisher eventPublisher) {
         this.createCommand = createCommand;
         this.transactionUtils = transactionUtils;
         this.eventPublisher = eventPublisher;

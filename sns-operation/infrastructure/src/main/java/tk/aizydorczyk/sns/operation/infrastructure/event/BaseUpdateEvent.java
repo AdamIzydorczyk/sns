@@ -6,7 +6,9 @@ import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
 
 import java.util.Objects;
 
-public abstract class BaseUpdateEvent<DtoType extends BaseDto, CommandClass extends BaseUpdateCommand<DtoType, ?>> implements SystemEvent {
+public abstract class BaseUpdateEvent<DtoType extends BaseDto,
+        CommandClass extends BaseUpdateCommand<DtoType, ?>>
+        implements SystemEvent {
 
     private final Class<CommandClass> commandClass;
     private final Class<DtoType> dtoClass;
@@ -15,13 +17,12 @@ public abstract class BaseUpdateEvent<DtoType extends BaseDto, CommandClass exte
     private final AuditingInformation auditingInformation;
 
     public BaseUpdateEvent(Class<CommandClass> commandClass,
-                           Class<DtoType> dtoClass,
                            DtoType dto,
                            Long id,
                            AuditingInformation auditingInformation) {
         this.commandClass = Objects.requireNonNull(commandClass);
-        this.dtoClass = Objects.requireNonNull(dtoClass);
         this.dto = Objects.requireNonNull(dto);
+        this.dtoClass = (Class<DtoType>) dto.getClass();
         this.id = Objects.requireNonNull(id);
         this.auditingInformation = Objects.requireNonNull(auditingInformation);
     }

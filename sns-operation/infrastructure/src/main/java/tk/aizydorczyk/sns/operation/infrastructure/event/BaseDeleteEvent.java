@@ -5,7 +5,8 @@ import tk.aizydorczyk.sns.operation.infrastructure.rest.AuditingInformation;
 
 import java.util.Objects;
 
-public abstract class BaseDeleteEvent<CommandType extends BaseDeleteCommand> implements SystemEvent {
+public abstract class BaseDeleteEvent<CommandType extends BaseDeleteCommand>
+        implements SystemEvent {
 
     private final Class<CommandType> commandClass;
     private final Long id;

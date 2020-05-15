@@ -19,7 +19,7 @@ class DeletePostVoteCommandConfiguration {
 
     @Bean
     public DeletePostVoteCommand deletePostVoteCommand() {
-        return new DeletePostVoteCommand(postVoteRepository::deleteById,
+        return new DeletePostVoteCommand(postVoteRepository::deleteByPostIdAndCreatedBy,
                 postRepository::findById);
     }
 }
