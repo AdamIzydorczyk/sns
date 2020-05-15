@@ -6,7 +6,7 @@ import tk.aizydorczyk.sns.operation.infrastructure.rest.BaseDto;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class BaseDependentEntity<TargetDtoType extends BaseDto, ParentType extends BaseEntity> extends BaseEntity<TargetDtoType> {
+public abstract class BaseDependentEntity<TargetDtoType extends BaseDto, ParentType extends BaseEntity<?>> extends BaseEntity<TargetDtoType> {
 
     protected BaseDependentEntity() {
         super();

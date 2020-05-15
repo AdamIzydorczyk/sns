@@ -1,6 +1,6 @@
 package tk.aizydorczyk.sns.search.domain.vote;
 
-import tk.aizydorczyk.sns.common.domain.vote.VoteType;
+import tk.aizydorczyk.sns.common.domain.vote.VoteTypes;
 import tk.aizydorczyk.sns.search.domain.comment.CommentSearch;
 import tk.aizydorczyk.sns.search.domain.post.PostSearch;
 import tk.aizydorczyk.sns.search.infrastructure.jpa.BaseSearchEntity;
@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Table(name = "vote")
 public class VoteSearch extends BaseSearchEntity {
     @Enumerated(value = EnumType.STRING)
-    private VoteType type;
+    private VoteTypes type;
 
     @ManyToOne
     private CommentSearch comment;
@@ -26,7 +26,7 @@ public class VoteSearch extends BaseSearchEntity {
     public VoteSearch() {
     }
 
-    public VoteType getType() {
+    public VoteTypes getType() {
         return type;
     }
 

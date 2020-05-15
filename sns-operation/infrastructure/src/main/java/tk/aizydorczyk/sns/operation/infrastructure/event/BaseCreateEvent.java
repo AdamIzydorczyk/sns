@@ -14,12 +14,11 @@ public abstract class BaseCreateEvent<DtoType extends BaseDto, CommandType exten
     private final AuditingInformation auditingInformation;
 
     public BaseCreateEvent(Class<CommandType> commandClass,
-                           Class<DtoType> dtoClass,
                            DtoType dto,
                            AuditingInformation auditingInformation) {
         this.commandClass = Objects.requireNonNull(commandClass);
-        this.dtoClass = Objects.requireNonNull(dtoClass);
         this.dto = Objects.requireNonNull(dto);
+        this.dtoClass = (Class<DtoType>) dto.getClass();
         this.auditingInformation = Objects.requireNonNull(auditingInformation);
     }
 

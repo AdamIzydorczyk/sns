@@ -24,10 +24,10 @@ class CreateCommentVoteCommandConfiguration {
 
     @Bean
     public CreateCommentVoteCommand createCommentVoteCommand() {
-        return new CreateCommentVoteCommand(commentRepository::findById,
-                commentVoteRepository::save,
+        return new CreateCommentVoteCommand(commentVoteRepository::findByCommentIdAndCreatedBy,
+                commentRepository::findById,
+                commentVoteRepository::saveAndFlush,
                 vote -> mapper.map(vote, VoteDto.class),
                 mapper);
     }
-
 }

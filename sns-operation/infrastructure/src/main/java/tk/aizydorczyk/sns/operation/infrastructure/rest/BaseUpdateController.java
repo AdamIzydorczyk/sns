@@ -24,7 +24,9 @@ public abstract class BaseUpdateController<DtoType extends BaseDto,
     private final TransactionUtils transactionUtils;
     private final ApplicationEventPublisher eventPublisher;
 
-    public BaseUpdateController(UpdateCommand updateCommand, TransactionUtils transactionUtils, ApplicationEventPublisher eventPublisher) {
+    public BaseUpdateController(UpdateCommand updateCommand,
+                                TransactionUtils transactionUtils,
+                                ApplicationEventPublisher eventPublisher) {
         this.updateCommand = updateCommand;
         this.transactionUtils = transactionUtils;
         this.eventPublisher = eventPublisher;

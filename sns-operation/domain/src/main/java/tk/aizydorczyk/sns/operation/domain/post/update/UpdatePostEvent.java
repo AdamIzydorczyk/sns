@@ -8,6 +8,6 @@ public class UpdatePostEvent extends BaseUpdateEvent<PostDto, UpdatePostCommand>
     public UpdatePostEvent(PostDto dto,
                            Long id,
                            AuditingInformation auditingInformation) {
-        super(UpdatePostCommand.class, PostDto.class, dto, id, auditingInformation);
+        super(UpdatePostCommand.class, dto, id, auditingInformation);
     }
 }
