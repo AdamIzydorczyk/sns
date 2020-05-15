@@ -30,6 +30,6 @@ public class CreateCommentVoteCommand extends BaseCreateVoteCommand<CommentVote,
     public CreateCommentVoteEvent prepareEvent(VoteDto dto,
                                                Long parentId,
                                                AuditingInformation auditingInformation) {
-        return new CreateCommentVoteEvent(getClass(), dto, parentId, auditingInformation);
+        return new CreateCommentVoteEvent(dto, parentId, auditingInformation);
     }
 }

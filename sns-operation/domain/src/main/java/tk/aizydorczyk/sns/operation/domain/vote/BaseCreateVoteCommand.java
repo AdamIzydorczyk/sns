@@ -40,7 +40,7 @@ public abstract class BaseCreateVoteCommand<VoteType extends Vote<ParentEntityTy
 
         final UUID userUuid = auditingInformation.getUserUuid();
         final Optional<VoteType> vote = findByParentIdAndCreatedBy.apply(parentId, userUuid);
-        return vote.map(VoteType -> changeType(VoteType, dto.getType()))
+        return vote.map(voteToChange -> changeType(voteToChange, dto.getType(), auditingInformation))
                 .map(mapToVoteDto)
                 .orElseGet(() -> createVote(dto, auditingInformation, parent));
     }
@@ -59,7 +59,8 @@ public abstract class BaseCreateVoteCommand<VoteType extends Vote<ParentEntityTy
                                            Mapper mapper);
 
     private VoteType changeType(VoteType vote,
-                                VoteTypes type) {
+                                VoteTypes type, AuditingInformation auditingInformation) {
+        vote.applyAuditingInformation(auditingInformation);
         vote.changeType(type);
         return vote;
     }
