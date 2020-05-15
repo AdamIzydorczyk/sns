@@ -32,6 +32,6 @@ class CreatePostVoteCommand extends BaseCreateVoteCommand<PostVote, Post> {
     public SystemEvent prepareEvent(VoteDto dto,
                                     Long parentId,
                                     AuditingInformation auditingInformation) {
-        return new CreatePostVoteEvent(getClass(), dto, parentId, auditingInformation);
+        return new CreatePostVoteEvent(dto, parentId, auditingInformation);
     }
 }

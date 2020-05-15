@@ -35,8 +35,6 @@ public abstract class Vote<ParentEntityType extends BaseEntity<?>> extends BaseD
     }
 
     public void changeType(VoteTypes newType) {
-        if (this.type != newType) {
-            this.type = newType;
-        }
+        this.type = newType;
     }
 }
