@@ -15,6 +15,7 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 
 class PostCreateCommandTest extends Specification {
+
     @Shared
     private Mapper mapper
 

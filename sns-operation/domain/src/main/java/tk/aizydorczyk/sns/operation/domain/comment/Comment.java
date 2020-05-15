@@ -36,6 +36,11 @@ public class Comment extends BaseDependentEntity<CommentDto, Post> {
         super(commentDto, mapper);
     }
 
+    public Comment(Builder builder) {
+        this.comment = builder.comment;
+        this.post = builder.post;
+    }
+
     @Override
     public void applyDto(CommentDto commentDto,
                          Mapper mapper) {
@@ -53,5 +58,25 @@ public class Comment extends BaseDependentEntity<CommentDto, Post> {
 
     public Post getPost() {
         return post;
+    }
+
+
+    public static final class Builder {
+        private String comment;
+        private Post post;
+
+        public Builder comment(String comment) {
+            this.comment = comment;
+            return this;
+        }
+
+        public Builder post(Post post) {
+            this.post = post;
+            return this;
+        }
+
+        public Comment build() {
+            return new Comment(this);
+        }
     }
 }
