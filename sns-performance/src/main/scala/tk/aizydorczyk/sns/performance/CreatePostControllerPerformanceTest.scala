@@ -6,9 +6,9 @@ import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
 import io.gatling.http.protocol.HttpProtocolBuilder
-import tk.aizydorczyk.sns.performance.PostControllerPerformanceTest._;
+import tk.aizydorczyk.sns.performance.CreatePostControllerPerformanceTest._;
 
-class PostControllerPerformanceTest extends Simulation {
+class CreatePostControllerPerformanceTest extends Simulation {
   val httpProtocol: HttpProtocolBuilder = http
     .baseUrl(URL)
     .acceptHeader(CONTENT_TYPE)
@@ -27,7 +27,7 @@ class PostControllerPerformanceTest extends Simulation {
     .assertions(global.requestsPerSec.gte(MIN_REQUESTS_COUNT))
 }
 
-object PostControllerPerformanceTest {
+object CreatePostControllerPerformanceTest {
   private val URL = "http://localhost:8083"
   private val CONTENT_TYPE = "application/json;charset=UTF-8"
   private val AGENT_HEADER = "Gatling"
