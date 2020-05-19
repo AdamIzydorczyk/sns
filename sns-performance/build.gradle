@@ -13,16 +13,16 @@ dependencies {
 }
 
 task runSnsPostControllerPerformanceTest(type: JavaExec) {
-    description = 'Test load the Spring Boot web service with Gatling'
-    group = 'Load Test'
+    description = 'Test CreatePostController with Gatling'
+    group = 'Controller Test'
     classpath = sourceSets.test.runtimeClasspath
     jvmArgs = [
             "-Dgatling.core.directory.binaries=${sourceSets.test.output.classesDirs.toString()}"
     ]
     main = 'io.gatling.app.Gatling'
     args = [
-            '--simulation', 'tk.aizydorczyk.sns.performance.SnsPostControllerPerformanceTest',
+            '--simulation', 'tk.aizydorczyk.sns.performance.CreatePostControllerPerformanceTest',
             '--results-folder', "${buildDir}/gatling-results",
-            '--binaries-folder', sourceSets.test.output.classesDirs.toString() // ignored because of above bug
+            '--binaries-folder', sourceSets.test.output.classesDirs.toString()
     ]
 }
