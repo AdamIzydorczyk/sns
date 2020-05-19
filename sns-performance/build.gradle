@@ -1,0 +1,28 @@
+apply plugin: 'scala'
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.scala-lang', name: 'scala-library', version: '2.12.11'
+    compile group: 'io.gatling.highcharts', name: 'gatling-charts-highcharts', version: '3.3.1'
+}
+
+task runSnsPostControllerPerformanceTest(type: JavaExec) {
+    description = 'Test load the Spring Boot web service with Gatling'
+    group = 'Load Test'
+    classpath = sourceSets.test.runtimeClasspath
+    jvmArgs = [
+            "-Dgatling.core.directory.binaries=${sourceSets.test.output.classesDirs.toString()}"
+    ]
+    main = 'io.gatling.app.Gatling'
+    args = [
+            '--simulation', 'tk.aizydorczyk.sns.performance.SnsPostControllerPerformanceTest',
+            '--results-folder', "${buildDir}/gatling-results",
+            '--binaries-folder', sourceSets.test.output.classesDirs.toString() // ignored because of above bug
+    ]
+}
