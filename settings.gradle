@@ -13,6 +13,6 @@ include 'sns-search:app'
 include 'sns-search:infrastructure'
 include 'sns-search:domain'
 
-
+include 'sns-performance'
 
 
